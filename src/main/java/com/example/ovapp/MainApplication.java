@@ -1,0 +1,26 @@
+package com.example.ovapp;
+
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+
+public class MainApplication extends Application {
+
+
+    public static void main(String[] args) {
+    }
+
+
+    @Override
+    public void start(Stage stage) throws Exception {
+        FXMLLoader fxmlLoader = new FXMLLoader(
+                MainApplication.class.getResource("/com/example/ovapp/view/home.fxml")
+        );
+        Scene scene = new Scene(fxmlLoader.load());
+
+        stage.setTitle("WhereTo");
+        stage.setScene(scene);
+        stage.show();
+    }
+}
