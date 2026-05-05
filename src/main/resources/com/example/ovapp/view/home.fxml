@@ -5,12 +5,15 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.SVGPath?>
 
 <BorderPane xmlns:fx="http://javafx.com/fxml"
             fx:controller="controller.HomeController"
             prefWidth="1100"
             prefHeight="650"
             style="-fx-background-color: white;">
+
+
 
     <top>
         <HBox alignment="CENTER_LEFT"
@@ -38,16 +41,22 @@
                        style="-fx-font-size: 18px; -fx-font-weight: bold;" />
             </HBox>
 
-            <Label text="&#x1F310;" style="-fx-font-size: 28px;" />
-            <MenuButton fx:id="languageMenuButton"
-                        text="NL"
-                        style="-fx-background-color: transparent; -fx-font-size: 16px;">
-                <items>
-                    <MenuItem text="Nederlands" onAction="#setDutchLanguage" />
-                    <MenuItem text="English" onAction="#setEnglishLanguage" />
-                </items>
-            </MenuButton>
+            <Region prefWidth="5" />
 
+            <HBox alignment="CENTER" spacing="-6">
+                <Label text="&#x1F310;"
+                       style="-fx-font-size: 28px;" />
+
+                <MenuButton fx:id="languageMenuButton"
+                            text="NL"
+                            style="-fx-background-color: transparent; -fx-font-size: 16px; -fx-padding: 0;">
+                    <items>
+                        <MenuItem text="Nederlands" onAction="#setDutchLanguage" />
+                        <MenuItem text="English" onAction="#setEnglishLanguage" />
+                    </items>
+                </MenuButton>
+            </HBox>
+            <Region prefWidth="18" />
             <Button fx:id="loginButton"
                     text="&#x1F464;  Inloggen"
                     onAction="#goToLogin"
@@ -143,8 +152,12 @@
                                      -fx-background-color: linear-gradient(to bottom, #eeeeee, #dddddd);
                                      -fx-padding: 0 14 0 14;">
 
-                            <Label text="&#x1F4CD;"
-                                   style="-fx-font-size: 28px; -fx-font-weight: bold;" />
+                            <SVGPath content="M12 2 C8.1 2 5 5.1 5 9 c0 5.25 7 13 7 13 s7-7.75 7-13 c0-3.9-3.1-7-7-7 z M12 11.5 c-1.4 0-2.5-1.1-2.5-2.5 s1.1-2.5 2.5-2.5 2.5 1.1 2.5 2.5-1.1 2.5-2.5 2.5 z"
+                                     style="-fx-fill: transparent;
+                -fx-stroke: #333333;
+                -fx-stroke-width: 1.8;
+                -fx-scale-x: 1.2;
+                -fx-scale-y: 1.2;" />
 
                             <ComboBox fx:id="fromComboBox"
                                       promptText="Kies vertrekstation"
@@ -182,8 +195,22 @@
                                      -fx-background-color: linear-gradient(to bottom, #eeeeee, #dddddd);
                                      -fx-padding: 0 14 0 14;">
 
-                            <Label text="&#x1F4CD;"
-                                   style="-fx-font-size: 28px; -fx-font-weight: bold;" />
+                            <SVGPath content="M12 2 C8.1 2 5 5.1 5 9 c0 5.25 7 13 7 13 s7-7.75 7-13 c0-3.9-3.1-7-7-7 z M12 11.5 c-1.4 0-2.5-1.1-2.5-2.5 s1.1-2.5 2.5-2.5 2.5 1.1 2.5 2.5-1.1 2.5-2.5 2.5 z"
+                                     style="-fx-fill: transparent;
+                -fx-stroke: #333333;
+                -fx-stroke-width: 1.8;
+                -fx-scale-x: 1.2;
+                -fx-scale-y: 1.2;" />
+
+
+
+
+
+
+
+
+
+
 
                             <ComboBox fx:id="toComboBox"
                                       promptText="Kies aankomststation"
