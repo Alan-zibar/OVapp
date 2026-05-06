@@ -1,4 +1,11 @@
 package controller;
 
-public class FavoritesController {
+public abstract class FavoritesController implements LanguageRefreshable {
+    @Override
+    public void refreshLanguage() {
+
+    }
 }
+
+
+

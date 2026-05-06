@@ -2,25 +2,25 @@ package Service;
 
 public class LanguageService {
 
-    private boolean english;
+    private static boolean english = false;
 
-    public void useDutch() {
+    public static void useDutch() {
         english = false;
     }
 
-    public void useEnglish() {
+    public static void useEnglish() {
         english = true;
     }
 
-    public boolean isEnglish() {
+    public static boolean isEnglish() {
         return english;
     }
 
-    public String getLanguageCode() {
+    public static String getLanguageCode() {
         return english ? "EN" : "NL";
     }
 
-    public String text(String dutchText, String englishText) {
+    public static String text(String dutchText, String englishText) {
         return english ? englishText : dutchText;
     }
 }

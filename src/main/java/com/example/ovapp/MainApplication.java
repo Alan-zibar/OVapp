@@ -7,17 +7,16 @@ import javafx.stage.Stage;
 
 public class MainApplication extends Application {
 
-
     public static void main(String[] args) {
         launch(args);
     }
 
-
     @Override
     public void start(Stage stage) throws Exception {
         FXMLLoader fxmlLoader = new FXMLLoader(
-                MainApplication.class.getResource("/com/example/ovapp/view/home.fxml")
+                MainApplication.class.getResource("/com/example/ovapp/view/main-layout.fxml")
         );
+
         Scene scene = new Scene(fxmlLoader.load());
 
         stage.setTitle("WhereTo");
