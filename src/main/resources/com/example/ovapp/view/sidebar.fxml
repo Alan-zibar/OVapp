@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox prefWidth="260"
+      spacing="16"
+      style="-fx-border-color: transparent #999 transparent transparent;
+             -fx-border-width: 0 1.5 0 0;
+             -fx-padding: 45 30 30 45;"
+      xmlns:fx="http://javafx.com/fxml/1"
+      xmlns="http://javafx.com/javafx/17.0.12"
+      fx:controller="controller.SidebarController">
+
+    <Label fx:id="menuTitleLabel"
+           text="Menu"
+           style="-fx-font-size: 20px; -fx-font-weight: bold;" />
+
+    <Button fx:id="homeMenuButton"
+            text="Home"
+            onAction="#goToHome"
+            prefWidth="190"
+            prefHeight="42"
+            alignment="CENTER_LEFT"
+            contentDisplay="LEFT"
+            graphicTextGap="12"
+            style="-fx-background-color: transparent; -fx-font-size: 16px;">
+        <graphic>
+            <Label text="⌂"
+                   alignment="CENTER"
+                   prefWidth="28"
+                   style="-fx-font-size: 25px;" />
+        </graphic>
+    </Button>
+
+    <Button fx:id="planTripMenuButton"
+            text="Reis plannen"
+            onAction="#goToPlanTrip"
+            prefWidth="190"
+            prefHeight="42"
+            alignment="CENTER_LEFT"
+            contentDisplay="LEFT"
+            graphicTextGap="12"
+            style="-fx-background-color: transparent; -fx-font-size: 16px;">
+        <graphic>
+            <Label text="⌕"
+                   alignment="CENTER"
+                   prefWidth="28"
+                   style="-fx-font-size: 25px;" />
+        </graphic>
+    </Button>
+
+    <Button fx:id="favoritesMenuButton"
+            text="Favorieten"
+            onAction="#goToFavorites"
+            prefWidth="190"
+            prefHeight="42"
+            alignment="CENTER_LEFT"
+            contentDisplay="LEFT"
+            graphicTextGap="12"
+            style="-fx-background-color: transparent; -fx-font-size: 16px;">
+        <graphic>
+            <Label text="☆"
+                   alignment="CENTER"
+                   prefWidth="28"
+                   style="-fx-font-size: 25px;" />
+        </graphic>
+    </Button>
+
+    <Button fx:id="historyMenuButton"
+            text="Geschiedenis"
+            onAction="#goToHistory"
+            prefWidth="190"
+            prefHeight="42"
+            alignment="CENTER_LEFT"
+            contentDisplay="LEFT"
+            graphicTextGap="12"
+            style="-fx-background-color: transparent; -fx-font-size: 16px;">
+        <graphic>
+            <Label text="◷"
+                   alignment="CENTER"
+                   prefWidth="28"
+                   style="-fx-font-size: 25px;" />
+        </graphic>
+    </Button>
+
+    <Button fx:id="settingsMenuButton"
+            text="Instellingen"
+            onAction="#goToSettings"
+            prefWidth="190"
+            prefHeight="42"
+            alignment="CENTER_LEFT"
+            contentDisplay="LEFT"
+            graphicTextGap="12"
+            style="-fx-background-color: transparent; -fx-font-size: 16px;">
+        <graphic>
+            <Label text="⚙"
+                   alignment="CENTER"
+                   prefWidth="28"
+                   style="-fx-font-size: 25px;" />
+        </graphic>
+    </Button>
+
+</VBox>

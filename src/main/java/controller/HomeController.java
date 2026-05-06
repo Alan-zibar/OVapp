@@ -1,43 +1,24 @@
 package controller;
 
 import Service.LanguageService;
-import Service.NavigationService;
 import Service.TripService;
-import javafx.animation.Animation;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
-import javafx.scene.control.MenuButton;
-import javafx.util.Duration;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.util.StringConverter;
 
-
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-
-public class HomeController {
+public class HomeController implements LanguageRefreshable  {
 
     @FXML
     private DatePicker datePicker;
 
     @FXML
     private Label messageLabel;
-
-    @FXML
-    private Label currentTimeLabel;
-
-    @FXML
-    private Label currentTimeTextLabel;
-
-    @FXML
-    private Label menuTitleLabel;
 
     @FXML
     private Label planTitleLabel;
@@ -52,27 +33,6 @@ public class HomeController {
     private Label dateTimeLabel;
 
     @FXML
-    private MenuButton languageMenuButton;
-
-    @FXML
-    private Button loginButton;
-
-    @FXML
-    private Button homeMenuButton;
-
-    @FXML
-    private Button planTripMenuButton;
-
-    @FXML
-    private Button favoritesMenuButton;
-
-    @FXML
-    private Button historyMenuButton;
-
-    @FXML
-    private Button settingsMenuButton;
-
-    @FXML
     private Button searchButton;
 
     @FXML
@@ -83,13 +43,11 @@ public class HomeController {
 
     @FXML
     private ComboBox<String> toComboBox;
+
     @FXML
     private Spinner<Integer> minuteSpinner;
 
     private final TripService tripService = new TripService();
-    private final LanguageService languageService = new LanguageService();
-    private final DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
-    private Timeline clockTimeline;
 
     @FXML
     private void initialize() {
@@ -97,10 +55,9 @@ public class HomeController {
         toComboBox.getItems().addAll(tripService.getStations());
 
         setupTimeSpinners();
-
-        updateTexts();
-        startClock();
+        refreshLanguage();
     }
+
     private void setupTimeSpinners() {
         SpinnerValueFactory.IntegerSpinnerValueFactory hourFactory =
                 new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 23, 12);
@@ -146,52 +103,27 @@ public class HomeController {
         hourSpinner.setEditable(false);
         minuteSpinner.setEditable(false);
     }
-    private void startClock() {
-        updateCurrentTime();
 
-        clockTimeline = new Timeline(
-                new KeyFrame(Duration.seconds(1), event -> updateCurrentTime())
-        );
-        clockTimeline.setCycleCount(Animation.INDEFINITE);
-        clockTimeline.play();
-    }
+    @Override
+    public void refreshLanguage() {
+        planTitleLabel.setText(LanguageService.text("Plan je reis", "Plan your trip"));
 
-    private void updateCurrentTime() {
-        currentTimeLabel.setText(LocalTime.now().format(timeFormatter));
-    }
+        fromTitleLabel.setText(LanguageService.text("Van", "From"));
+        toTitleLabel.setText(LanguageService.text("Naar", "To"));
 
-    @FXML
-    private void setDutchLanguage() {
-        languageService.useDutch();
-        updateTexts();
-    }
+        dateTimeLabel.setText(LanguageService.text("Datum en tijd", "Date and time"));
 
-    @FXML
-    private void setEnglishLanguage() {
-        languageService.useEnglish();
-        updateTexts();
-    }
+        searchButton.setText(LanguageService.text("🔍  Zoek reis", "🔍  Search trip"));
 
-    private void updateTexts() {
-        languageMenuButton.setText(languageService.getLanguageCode());
-        currentTimeTextLabel.setText(languageService.text("Huidige tijd:", "Current time:"));
-        loginButton.setText(languageService.text("Inloggen", "Login"));
+        fromComboBox.setPromptText(LanguageService.text(
+                "Kies vertrekstation",
+                "Choose departure station"
+        ));
 
-        menuTitleLabel.setText("Menu");
-        homeMenuButton.setText("Home");
-        planTripMenuButton.setText(languageService.text("Reis plannen", "Plan trip"));
-        favoritesMenuButton.setText(languageService.text("Favorieten", "Favorites"));
-        historyMenuButton.setText(languageService.text("Geschiedenis", "History"));
-        settingsMenuButton.setText(languageService.text("Instellingen", "Settings"));
-
-        planTitleLabel.setText(languageService.text("Plan je reis", "Plan your trip"));
-        fromTitleLabel.setText(languageService.text("Van", "From"));
-        toTitleLabel.setText(languageService.text("Naar", "To"));
-        dateTimeLabel.setText(languageService.text("Datum en tijd", "Date and time"));
-        searchButton.setText(languageService.text("\uD83D\uDD0D  Zoek reis", "\uD83D\uDD0D  Search trip"));
-
-        fromComboBox.setPromptText(languageService.text("Kies vertrekstation", "Choose departure station"));
-        toComboBox.setPromptText(languageService.text("Kies aankomststation", "Choose arrival station"));
+        toComboBox.setPromptText(LanguageService.text(
+                "Kies aankomststation",
+                "Choose arrival station"
+        ));
 
         if (messageLabel.getText() != null && !messageLabel.getText().isEmpty()) {
             messageLabel.setText(getChooseStationsMessage());
@@ -199,7 +131,7 @@ public class HomeController {
     }
 
     private String getChooseStationsMessage() {
-        return languageService.text(
+        return LanguageService.text(
                 "Kies een vertrekstation en aankomststation.",
                 "Choose a departure station and arrival station."
         );
@@ -229,37 +161,5 @@ public class HomeController {
         }
 
         System.out.println("Gekozen tijd: " + selectedTime);
-
-
-    }
-
-    @FXML
-    private void goToHome(ActionEvent event) {
-        NavigationService.switchScene(event, "home.fxml");
-    }
-
-    @FXML
-    private void goToPlanTrip(ActionEvent event) {
-        NavigationService.switchScene(event, "home.fxml");
-    }
-
-    @FXML
-    private void goToFavorites(ActionEvent event) {
-        NavigationService.switchScene(event, "favorites.fxml");
-    }
-
-    @FXML
-    private void goToHistory(ActionEvent event) {
-        NavigationService.switchScene(event, "history.fxml");
-    }
-
-    @FXML
-    private void goToSettings(ActionEvent event) {
-        NavigationService.switchScene(event, "settings.fxml");
-    }
-
-    @FXML
-    private void goToLogin(ActionEvent event) {
-        NavigationService.switchScene(event, "login.fxml");
     }
 }
