@@ -1,13 +1,114 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 
-<VBox xmlns:fx="http://javafx.com/fxml"
-      fx:controller="controller.ResultsController"
-      alignment="CENTER"
-      spacing="20">
+<ScrollPane fitToWidth="true"
+            hbarPolicy="NEVER"
+            vbarPolicy="AS_NEEDED"
+            style="-fx-background-color: white; -fx-background: white;"
+            xmlns:fx="http://javafx.com/fxml/1"
+            xmlns="http://javafx.com/javafx/17.0.12"
+            fx:controller="controller.ResultsController">
 
-    <Label text="Resultaten" style="-fx-font-size: 28px; -fx-font-weight: bold;" />
+    <content>
+        <VBox spacing="16"
+              style="-fx-padding: 25 45 25 45; -fx-background-color: white;">
 
-</VBox>
+            <Label fx:id="resultsTitleLabel"
+                   text="Kies een reisoptie"
+                   style="-fx-font-size: 28px; -fx-font-weight: bold;" />
+
+            <HBox spacing="35"
+                  prefWidth="1000"
+                  maxWidth="1000"
+                  alignment="CENTER_LEFT"
+                  style="-fx-border-color: #777;
+                         -fx-border-width: 1.5;
+                         -fx-padding: 18 28 18 28;
+                         -fx-background-color: white;">
+
+                <VBox spacing="6" prefWidth="230">
+                    <Label fx:id="fromLabel"
+                           text="Van:"
+                           style="-fx-font-size: 20px; -fx-font-weight: bold;" />
+                    <Label fx:id="fromValueLabel"
+                           text="-"
+                           wrapText="true"
+                           style="-fx-font-size: 18px;" />
+                </VBox>
+
+                <VBox spacing="6" prefWidth="260">
+                    <Label fx:id="toLabel"
+                           text="Naar:"
+                           style="-fx-font-size: 20px; -fx-font-weight: bold;" />
+                    <Label fx:id="toValueLabel"
+                           text="-"
+                           wrapText="true"
+                           style="-fx-font-size: 18px;" />
+                </VBox>
+
+                <VBox spacing="6" prefWidth="230">
+                    <Label fx:id="dateTimeLabel"
+                           text="Datum en tijd:"
+                           style="-fx-font-size: 20px; -fx-font-weight: bold;" />
+                    <Label fx:id="dateTimeValueLabel"
+                           text="-"
+                           wrapText="true"
+                           style="-fx-font-size: 18px;" />
+                </VBox>
+
+                <Button fx:id="changeSearchButton"
+                        text="Wijzigen"
+                        onAction="#goBackToSearch"
+                        prefWidth="125"
+                        prefHeight="46"
+                        style="-fx-background-color: white;
+                               -fx-border-color: #777;
+                               -fx-font-size: 16px;" />
+            </HBox>
+
+            <Label fx:id="transportTitleLabel"
+                   text="Kies een reismiddel"
+                   style="-fx-font-size: 17px; -fx-font-weight: bold;" />
+
+            <HBox spacing="25">
+                <ToggleButton fx:id="trainToggleButton"
+                              text="🚆  Trein"
+                              selected="true"
+                              prefWidth="200"
+                              prefHeight="42"
+                              style="-fx-background-color: white;
+                                     -fx-border-color: #777;
+                                     -fx-font-size: 16px;" />
+
+                <ToggleButton fx:id="busToggleButton"
+                              text="🚌  Bus"
+                              prefWidth="200"
+                              prefHeight="42"
+                              style="-fx-background-color: white;
+                                     -fx-border-color: #777;
+                                     -fx-font-size: 16px;" />
+            </HBox>
+
+            <Label fx:id="optionsTitleLabel"
+                   text="Kies een reisoptie"
+                   style="-fx-font-size: 17px; -fx-font-weight: bold;" />
+
+            <VBox fx:id="resultsContainer"
+                  spacing="14" />
+
+            <HBox alignment="CENTER">
+                <Button fx:id="loadMoreButton"
+                        text="Meer resultaten laden⌄"
+                        onAction="#loadMoreResults"
+                        prefWidth="280"
+                        prefHeight="38"
+                        style="-fx-background-color: white;
+                               -fx-border-color: #999;
+                               -fx-font-size: 15px;" />
+            </HBox>
+
+        </VBox>
+    </content>
+</ScrollPane>

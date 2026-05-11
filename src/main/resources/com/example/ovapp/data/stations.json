@@ -1,0 +1,267 @@
+[
+  {
+    "name": "Amersfoort Centraal",
+    "code": "AMF",
+    "city": "Amersfoort",
+    "type": "TRAIN_STATION"
+  },
+  {
+    "name": "Amersfoort Schothorst",
+    "code": "AMFS",
+    "city": "Amersfoort",
+    "type": "TRAIN_STATION"
+  },
+  {
+    "name": "Amersfoort Vathorst",
+    "code": "AMFV",
+    "city": "Amersfoort",
+    "type": "TRAIN_STATION"
+  },
+  {
+    "name": "Busstation Amersfoort Centraal",
+    "code": "BUS_AMF_CENTRAAL",
+    "city": "Amersfoort",
+    "type": "BUS_STOP"
+  },
+  {
+    "name": "Bushalte Amersfoort De Hoef",
+    "code": "BUS_AMF_DE_HOEF",
+    "city": "Amersfoort",
+    "type": "BUS_STOP"
+  },
+  {
+    "name": "Bushalte Amersfoort Vathorst",
+    "code": "BUS_AMF_VATHORST",
+    "city": "Amersfoort",
+    "type": "BUS_STOP"
+  },
+
+  {
+    "name": "Utrecht Centraal",
+    "code": "UT",
+    "city": "Utrecht",
+    "type": "TRAIN_STATION"
+  },
+  {
+    "name": "Utrecht Leidsche Rijn",
+    "code": "UTLR",
+    "city": "Utrecht",
+    "type": "TRAIN_STATION"
+  },
+  {
+    "name": "Utrecht Vaartsche Rijn",
+    "code": "UTVR",
+    "city": "Utrecht",
+    "type": "TRAIN_STATION"
+  },
+  {
+    "name": "Busstation Utrecht Centraal",
+    "code": "BUS_UT_CENTRAAL",
+    "city": "Utrecht",
+    "type": "BUS_STOP"
+  },
+  {
+    "name": "Bushalte Utrecht Jaarbeurszijde",
+    "code": "BUS_UT_JAARBEURS",
+    "city": "Utrecht",
+    "type": "BUS_STOP"
+  },
+  {
+    "name": "Bushalte Utrecht Neude",
+    "code": "BUS_UT_NEUDE",
+    "city": "Utrecht",
+    "type": "BUS_STOP"
+  },
+
+  {
+    "name": "Amsterdam Centraal",
+    "code": "ASD",
+    "city": "Amsterdam",
+    "type": "TRAIN_STATION"
+  },
+  {
+    "name": "Amsterdam Amstel",
+    "code": "ASA",
+    "city": "Amsterdam",
+    "type": "TRAIN_STATION"
+  },
+  {
+    "name": "Amsterdam Sloterdijk",
+    "code": "ASS",
+    "city": "Amsterdam",
+    "type": "TRAIN_STATION"
+  },
+  {
+    "name": "Amsterdam Zuid",
+    "code": "ASDZ",
+    "city": "Amsterdam",
+    "type": "TRAIN_STATION"
+  },
+  {
+    "name": "Busstation Amsterdam Centraal",
+    "code": "BUS_ASD_CENTRAAL",
+    "city": "Amsterdam",
+    "type": "BUS_STOP"
+  },
+  {
+    "name": "Bushalte Amsterdam Museumplein",
+    "code": "BUS_ASD_MUSEUMPLEIN",
+    "city": "Amsterdam",
+    "type": "BUS_STOP"
+  },
+  {
+    "name": "Bushalte Amsterdam Leidseplein",
+    "code": "BUS_ASD_LEIDSEPLEIN",
+    "city": "Amsterdam",
+    "type": "BUS_STOP"
+  },
+
+  {
+    "name": "Rotterdam Centraal",
+    "code": "RTD",
+    "city": "Rotterdam",
+    "type": "TRAIN_STATION"
+  },
+  {
+    "name": "Rotterdam Blaak",
+    "code": "RTB",
+    "city": "Rotterdam",
+    "type": "TRAIN_STATION"
+  },
+  {
+    "name": "Rotterdam Alexander",
+    "code": "RTA",
+    "city": "Rotterdam",
+    "type": "TRAIN_STATION"
+  },
+  {
+    "name": "Busstation Rotterdam Centraal",
+    "code": "BUS_RTD_CENTRAAL",
+    "city": "Rotterdam",
+    "type": "BUS_STOP"
+  },
+  {
+    "name": "Bushalte Rotterdam Zuidplein",
+    "code": "BUS_RTD_ZUIDPLEIN",
+    "city": "Rotterdam",
+    "type": "BUS_STOP"
+  },
+  {
+    "name": "Bushalte Rotterdam Kralingse Zoom",
+    "code": "BUS_RTD_KRALINGSE_ZOOM",
+    "city": "Rotterdam",
+    "type": "BUS_STOP"
+  },
+
+  {
+    "name": "Den Haag Centraal",
+    "code": "GVC",
+    "city": "Den Haag",
+    "type": "TRAIN_STATION"
+  },
+  {
+    "name": "Den Haag HS",
+    "code": "GV",
+    "city": "Den Haag",
+    "type": "TRAIN_STATION"
+  },
+  {
+    "name": "Den Haag Laan van NOI",
+    "code": "LAA",
+    "city": "Den Haag",
+    "type": "TRAIN_STATION"
+  },
+  {
+    "name": "Busstation Den Haag Centraal",
+    "code": "BUS_GVC_CENTRAAL",
+    "city": "Den Haag",
+    "type": "BUS_STOP"
+  },
+  {
+    "name": "Bushalte Den Haag Spui",
+    "code": "BUS_GVC_SPUI",
+    "city": "Den Haag",
+    "type": "BUS_STOP"
+  },
+  {
+    "name": "Bushalte Den Haag Scheveningen",
+    "code": "BUS_GVC_SCHEVENINGEN",
+    "city": "Den Haag",
+    "type": "BUS_STOP"
+  },
+
+  {
+    "name": "Eindhoven Centraal",
+    "code": "EHV",
+    "city": "Eindhoven",
+    "type": "TRAIN_STATION"
+  },
+  {
+    "name": "Eindhoven Strijp-S",
+    "code": "EHS",
+    "city": "Eindhoven",
+    "type": "TRAIN_STATION"
+  },
+  {
+    "name": "Busstation Eindhoven Centraal",
+    "code": "BUS_EHV_CENTRAAL",
+    "city": "Eindhoven",
+    "type": "BUS_STOP"
+  },
+  {
+    "name": "Bushalte Eindhoven Airport",
+    "code": "BUS_EHV_AIRPORT",
+    "city": "Eindhoven",
+    "type": "BUS_STOP"
+  },
+
+  {
+    "name": "Groningen",
+    "code": "GN",
+    "city": "Groningen",
+    "type": "TRAIN_STATION"
+  },
+  {
+    "name": "Groningen Europapark",
+    "code": "GERP",
+    "city": "Groningen",
+    "type": "TRAIN_STATION"
+  },
+  {
+    "name": "Busstation Groningen Hoofdstation",
+    "code": "BUS_GN_HOOFDSTATION",
+    "city": "Groningen",
+    "type": "BUS_STOP"
+  },
+  {
+    "name": "Bushalte Groningen Grote Markt",
+    "code": "BUS_GN_GROTE_MARKT",
+    "city": "Groningen",
+    "type": "BUS_STOP"
+  },
+
+  {
+    "name": "Maastricht",
+    "code": "MT",
+    "city": "Maastricht",
+    "type": "TRAIN_STATION"
+  },
+  {
+    "name": "Maastricht Randwyck",
+    "code": "MTR",
+    "city": "Maastricht",
+    "type": "TRAIN_STATION"
+  },
+  {
+    "name": "Busstation Maastricht",
+    "code": "BUS_MT_STATION",
+    "city": "Maastricht",
+    "type": "BUS_STOP"
+  },
+  {
+    "name": "Bushalte Maastricht Markt",
+    "code": "BUS_MT_MARKT",
+    "city": "Maastricht",
+    "type": "BUS_STOP"
+  }
+]

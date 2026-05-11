@@ -52,6 +52,7 @@
                               prefHeight="70"
                               prefWidth="300"
                               promptText="Kies vertrekstation"
+                              editable="true"
                               style="-fx-background-color: transparent; -fx-font-size: 16px;"/>
                 </HBox>
             </VBox>
@@ -96,6 +97,7 @@
                               prefHeight="70"
                               prefWidth="325"
                               promptText="Kies aankomststation"
+                              editable="true"
                               style="-fx-background-color: transparent; -fx-font-size: 16px;"/>
                 </HBox>
             </VBox>
