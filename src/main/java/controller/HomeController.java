@@ -11,6 +11,11 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.util.StringConverter;
+import Service.TripSearchState;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
+
 
 public class HomeController implements LanguageRefreshable  {
 
@@ -49,14 +54,65 @@ public class HomeController implements LanguageRefreshable  {
 
     private final TripService tripService = new TripService();
 
+    private ObservableList<String> allStations;
+
     @FXML
     private void initialize() {
-        fromComboBox.getItems().addAll(tripService.getStations());
-        toComboBox.getItems().addAll(tripService.getStations());
+        allStations = FXCollections.observableArrayList(tripService.getStations());
+
+        fromComboBox.setItems(FXCollections.observableArrayList(allStations));
+        toComboBox.setItems(FXCollections.observableArrayList(allStations));
+
+        setupAutoComplete(fromComboBox);
+        setupAutoComplete(toComboBox);
 
         setupTimeSpinners();
         refreshLanguage();
     }
+
+    private void setupAutoComplete(ComboBox<String> comboBox) {
+
+        comboBox.getEditor().textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!comboBox.isShowing()) {
+                comboBox.show();
+            }
+
+            if (newValue == null || newValue.isBlank()) {
+                comboBox.setItems(FXCollections.observableArrayList(allStations));
+                return;
+            }
+
+            String typedText = newValue.toLowerCase();
+
+            ObservableList<String> filteredStations = FXCollections.observableArrayList();
+
+            for (String station : allStations) {
+                if (station.toLowerCase().contains(typedText)) {
+                    filteredStations.add(station);
+                }
+            }
+
+            comboBox.setItems(filteredStations);
+            comboBox.show();
+        });
+
+        comboBox.setOnAction(event -> {
+            String selectedStation = comboBox.getSelectionModel().getSelectedItem();
+
+            if (selectedStation != null) {
+                comboBox.getEditor().setText(selectedStation);
+            }
+        });
+        comboBox.getEditor().setOnAction(event -> {
+            if (!comboBox.getItems().isEmpty()) {
+                String firstMatch = comboBox.getItems().get(0);
+                comboBox.setValue(firstMatch);
+                comboBox.getEditor().setText(firstMatch);
+                comboBox.hide();
+            }
+        });
+    }
+
 
     private void setupTimeSpinners() {
         SpinnerValueFactory.IntegerSpinnerValueFactory hourFactory =
@@ -148,18 +204,25 @@ public class HomeController implements LanguageRefreshable  {
 
     @FXML
     private void searchTrip(ActionEvent event) {
-        String from = fromComboBox.getValue();
-        String to = toComboBox.getValue();
+        String from = fromComboBox.getEditor().getText();
+        String to = toComboBox.getEditor().getText();
+
 
         int hour = hourSpinner.getValue();
         int minute = minuteSpinner.getValue();
         String selectedTime = String.format("%02d:%02d", hour, minute);
+
+        String selectedDate = datePicker.getValue() == null
+                ? ""
+                : datePicker.getValue().toString();
+
 
         if (!tripService.isValidTrip(from, to)) {
             messageLabel.setText(getChooseStationsMessage());
             return;
         }
 
-        System.out.println("Gekozen tijd: " + selectedTime);
+        TripSearchState.saveSearch(from, to, selectedDate, selectedTime);
+        MainLayoutController.loadPage("results.fxml");
     }
 }

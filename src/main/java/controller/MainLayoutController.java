@@ -28,6 +28,7 @@ public class MainLayoutController {
                     "/com/example/ovapp/view/" + fxmlFile
             ));
 
+
             Node page = loader.load();
             Object controller = loader.getController();
 
