@@ -5,19 +5,21 @@
 <?import javafx.scene.layout.VBox?>
 
 <VBox alignment="CENTER" spacing="15" xmlns:fx="http://javafx.com/fxml"
-      fx:controller="controller.LoginController">
+      fx:controller="controller.RegisterController">
     <padding>
         <Insets top="30" right="30" bottom="30" left="30"/>
     </padding>
 
-    <Label text="Inloggen" style="-fx-font-size: 28px; -fx-font-weight: bold;"/>
+    <Label text="Nieuw account aanmaken" style="-fx-font-size: 24px; -fx-font-weight: bold;"/>
 
+    <TextField fx:id="fullNameField" promptText="Volledige naam" prefWidth="250"/>
     <TextField fx:id="usernameField" promptText="Gebruikersnaam" prefWidth="250"/>
     <PasswordField fx:id="passwordField" promptText="Wachtwoord" prefWidth="250"/>
+    <PasswordField fx:id="confirmPasswordField" promptText="Bevestig wachtwoord" prefWidth="250"/>
 
-    <Button text="Login" onAction="#handleLogin" prefWidth="120"/>
+    <Button text="Registreer" onAction="#handleRegister" prefWidth="120"/>
 
     <Label fx:id="messageLabel" text="" style="-fx-text-fill: red;"/>
 
-    <Hyperlink text="Nieuw account aanmaken" onAction="#goToRegister"/>
+    <Hyperlink text="Terug naar inloggen" onAction="#goToLogin"/>
 </VBox>
