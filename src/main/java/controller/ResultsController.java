@@ -317,9 +317,12 @@ public class ResultsController implements LanguageRefreshable {
 
         Button viewRouteButton = new Button(LanguageService.text("Bekijk route", "View route"));
         viewRouteButton.setOnAction(event -> viewRoute());
+        Service.HistoryService.getInstance().addEntry(from, to, selectedTransport);
+        viewRoute();
         viewRouteButton.setPrefWidth(130);
         viewRouteButton.setPrefHeight(40);
         viewRouteButton.setStyle("-fx-background-color: white; -fx-border-color: #777; -fx-font-size: 15px;");
+
 
         VBox rightInfo = new VBox(12, statusLabel, arrivalLabel, viewRouteButton);
         rightInfo.setStyle("-fx-border-color: transparent transparent transparent #cccccc; -fx-border-width: 0 0 0 1.5; -fx-padding: 0 0 0 25;");
