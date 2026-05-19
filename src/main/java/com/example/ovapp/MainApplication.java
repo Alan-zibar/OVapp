@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import controller.SettingsController;  // <-- اضافه شد
 
 public class MainApplication extends Application {
 
@@ -22,5 +23,7 @@ public class MainApplication extends Application {
         stage.setTitle("WhereTo");
         stage.setScene(scene);
         stage.show();
+
+        SettingsController.applyInitialSettings(scene);
     }
 }
