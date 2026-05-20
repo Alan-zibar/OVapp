@@ -36,6 +36,7 @@
             <TextField fx:id="usernameField"
                        promptText="Voer je e-mailadres of gebruikersnaam in"
                        prefHeight="52"
+                       prefWidth="500"
                        style="-fx-font-size: 15px;" />
         </VBox>
 
@@ -45,11 +46,31 @@
                    text="Wachtwoord"
                    style="-fx-font-size: 15px; -fx-font-weight: bold;" />
 
+            <StackPane prefWidth="500">
+
             <PasswordField fx:id="passwordField"
                            promptText="Voer je wachtwoord in"
                            prefHeight="52"
+                           prefWidth="500"
                            style="-fx-font-size: 15px;" />
-        </VBox>
+
+             <TextField fx:id="visiblePasswordField"
+                        promptText="Voer je wachtwoord in"
+                        prefHeight="52"
+                        prefWidth="500"
+                        visible="false"
+                        style="-fx-font-size: 15px;"/>          
+
+              <Button text="👁"
+                       onAction="#togglePasswordVisibility"
+                       prefWidth="45"
+                       prefHeight="45"
+                       style="-fx-background-color: transparent;
+                       -fx-font-size: 18px;"
+                       StackPane.alignment="CENTER_RIGHT" />
+              </StackPane>
+              
+       </VBox>
 
         <Label fx:id="messageLabel"
                text=""
