@@ -38,6 +38,19 @@ public class TripService {
         return stationNames;
     }
 
+    public List<String> getStationsForTransportMode(String transportMode) {
+        String stationType = "BUS".equals(transportMode) ? "BUS_STOP" : "TRAIN_STATION";
+        List<String> stationNames = new ArrayList<>();
+
+        for (Station station : stations) {
+            if (stationType.equals(station.getType())) {
+                stationNames.add(station.getName());
+            }
+        }
+
+        return stationNames;
+    }
+
     public boolean isValidTrip(String from, String to) {
         return from != null
                 && to != null

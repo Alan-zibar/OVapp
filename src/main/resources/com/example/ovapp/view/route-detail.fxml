@@ -1,13 +1,195 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 
-<VBox xmlns:fx="http://javafx.com/fxml"
-      fx:controller="controller.RouteDetailController"
-      alignment="CENTER"
-      spacing="20">
+<ScrollPane fitToWidth="true"
+            hbarPolicy="NEVER"
+            vbarPolicy="AS_NEEDED"
+            style="-fx-background-color: white; -fx-background: white;"
+            xmlns:fx="http://javafx.com/fxml/1"
+            xmlns="http://javafx.com/javafx/17.0.12"
+            fx:controller="controller.RouteDetailController">
 
-    <Label text="Route detail" style="-fx-font-size: 28px; -fx-font-weight: bold;" />
+    <content>
+        <VBox spacing="16"
+              fillWidth="true"
+              maxWidth="Infinity"
+              style="-fx-padding: 10 28 28 28; -fx-background-color: white;">
 
-</VBox>
+            <HBox alignment="CENTER_LEFT"
+                  maxWidth="Infinity">
+                <Button fx:id="backButton"
+                        onAction="#goBackToResults"
+                        prefHeight="38"
+                        prefWidth="205"
+                        style="-fx-background-color: white;
+                               -fx-border-color: #777;
+                               -fx-border-width: 1.5;
+                               -fx-font-size: 14px;
+                               -fx-font-weight: bold;" />
+
+                <Region HBox.hgrow="ALWAYS" />
+
+                <Button fx:id="favoriteButton"
+                        onAction="#addToFavorites"
+                        prefHeight="38"
+                        prefWidth="205"
+                        style="-fx-background-color: white;
+                               -fx-border-color: #777;
+                               -fx-border-width: 1.5;
+                               -fx-font-size: 14px;
+                               -fx-font-weight: bold;" />
+            </HBox>
+
+            <HBox alignment="CENTER_LEFT"
+                  spacing="18"
+                  maxWidth="Infinity"
+                  style="-fx-border-color: #777;
+                         -fx-border-width: 1.5;
+                         -fx-padding: 14 18 14 18;
+                         -fx-background-color: white;">
+
+                <Label fx:id="transportIconLabel"
+                       alignment="CENTER"
+                       prefWidth="58"
+                       style="-fx-font-size: 42px;" />
+
+                <VBox spacing="6" prefWidth="330">
+                    <Label fx:id="timeRangeLabel"
+                           style="-fx-font-size: 22px; -fx-font-weight: bold;" />
+                    <Label fx:id="routeNameLabel"
+                           wrapText="true"
+                           style="-fx-font-size: 15px;" />
+                    <Label fx:id="transportInfoLabel"
+                           wrapText="true"
+                           style="-fx-font-size: 15px;" />
+                </VBox>
+
+                <Region HBox.hgrow="ALWAYS" />
+
+                <Separator orientation="VERTICAL" prefHeight="74" />
+
+                <VBox alignment="CENTER_LEFT" spacing="7" prefWidth="170">
+                    <Label fx:id="dateTimeSummaryLabel"
+                           wrapText="true"
+                           style="-fx-font-size: 14px;" />
+                    <Label fx:id="plannedArrivalLabel"
+                           wrapText="true"
+                           style="-fx-font-size: 13px;" />
+                </VBox>
+
+                <Separator orientation="VERTICAL" prefHeight="74" />
+
+                <VBox alignment="CENTER_LEFT" spacing="7" prefWidth="150">
+                    <Label fx:id="statusLabel"
+                           wrapText="true"
+                           style="-fx-font-size: 14px; -fx-font-weight: bold;" />
+                    <Label fx:id="expectedArrivalLabel"
+                           wrapText="true"
+                           style="-fx-font-size: 13px;" />
+                </VBox>
+            </HBox>
+
+            <VBox maxWidth="Infinity"
+                  style="-fx-border-color: #777;
+                         -fx-border-width: 1.5;
+                         -fx-background-color: white;">
+
+                <HBox alignment="CENTER_LEFT"
+                      style="-fx-border-color: transparent transparent #cccccc transparent;
+                             -fx-border-width: 0 0 1 0;
+                             -fx-padding: 14 20 14 20;">
+                    <Label fx:id="routeOverviewTitleLabel"
+                           style="-fx-font-size: 16px; -fx-font-weight: bold;" />
+                    <Region HBox.hgrow="ALWAYS" />
+                    <Label fx:id="detailedTransportLabel"
+                           style="-fx-font-size: 15px; -fx-font-weight: bold;" />
+                </HBox>
+
+                <VBox fx:id="stopsContainer"
+                      spacing="0"
+                      style="-fx-padding: 14 20 18 20;" />
+            </VBox>
+
+            <HBox spacing="20"
+                  maxWidth="Infinity">
+                <VBox alignment="CENTER"
+                      spacing="3"
+                      HBox.hgrow="ALWAYS"
+                      maxWidth="Infinity"
+                      style="-fx-border-color: #999;
+                             -fx-border-width: 1.5;
+                             -fx-padding: 10;
+                             -fx-background-color: white;">
+                    <Label fx:id="durationValueLabel"
+                           style="-fx-font-size: 17px; -fx-font-weight: bold;" />
+                    <Label fx:id="durationTitleLabel"
+                           style="-fx-font-size: 14px;" />
+                </VBox>
+
+                <VBox alignment="CENTER"
+                      spacing="3"
+                      HBox.hgrow="ALWAYS"
+                      maxWidth="Infinity"
+                      style="-fx-border-color: #999;
+                             -fx-border-width: 1.5;
+                             -fx-padding: 10;
+                             -fx-background-color: white;">
+                    <Label fx:id="distanceValueLabel"
+                           style="-fx-font-size: 17px; -fx-font-weight: bold;" />
+                    <Label fx:id="distanceTitleLabel"
+                           style="-fx-font-size: 14px;" />
+                </VBox>
+
+                <VBox alignment="CENTER"
+                      spacing="3"
+                      HBox.hgrow="ALWAYS"
+                      maxWidth="Infinity"
+                      style="-fx-border-color: #999;
+                             -fx-border-width: 1.5;
+                             -fx-padding: 10;
+                             -fx-background-color: white;">
+                    <Label fx:id="transfersValueLabel"
+                           style="-fx-font-size: 17px; -fx-font-weight: bold;" />
+                    <Label fx:id="transfersTitleLabel"
+                           style="-fx-font-size: 14px;" />
+                </VBox>
+            </HBox>
+
+            <Button fx:id="travelDataButton"
+                    prefHeight="40"
+                    maxWidth="Infinity"
+                    style="-fx-background-color: white;
+                           -fx-border-color: #999;
+                           -fx-border-width: 1.5;
+                           -fx-font-size: 14px;
+                           -fx-font-weight: bold;" />
+
+            <HBox fx:id="favoriteMessageBox"
+                  alignment="CENTER_LEFT"
+                  spacing="12"
+                  maxWidth="Infinity"
+                  visible="false"
+                  managed="false"
+                  style="-fx-border-color: #999;
+                         -fx-border-width: 1.5;
+                         -fx-padding: 10 14 10 14;
+                         -fx-background-color: white;">
+                <Label text="✓"
+                       style="-fx-font-size: 24px; -fx-font-weight: bold;" />
+                <Label fx:id="favoriteMessageLabel"
+                       style="-fx-font-size: 14px; -fx-font-weight: bold;" />
+                <Region HBox.hgrow="ALWAYS" />
+                <Button text="x"
+                        onAction="#closeFavoriteMessage"
+                        prefHeight="28"
+                        prefWidth="28"
+                        style="-fx-background-color: white;
+                               -fx-border-color: transparent;
+                               -fx-font-size: 18px;" />
+            </HBox>
+        </VBox>
+    </content>
+</ScrollPane>
