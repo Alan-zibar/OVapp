@@ -39,8 +39,7 @@ public class RouteDetailController implements LanguageRefreshable {
     private Label routeNameLabel;
     @FXML
     private Label transportInfoLabel;
-    @FXML
-    private Label dateTimeSummaryLabel;
+
     @FXML
     private Label plannedArrivalLabel;
     @FXML
@@ -73,6 +72,12 @@ public class RouteDetailController implements LanguageRefreshable {
     private Label favoriteMessageLabel;
 
     @FXML
+    private Label dateOnlyLabel;
+
+    @FXML
+    private Label timeOnlyLabel;
+
+    @FXML
     private void initialize() {
         refreshLanguage();
     }
@@ -94,7 +99,8 @@ public class RouteDetailController implements LanguageRefreshable {
         timeRangeLabel.setText(trip.getDepartureTime() + "  ->  " + trip.getExpectedArrivalTime());
         routeNameLabel.setText(trip.getFromStation() + "  ->  " + trip.getToStation());
         transportInfoLabel.setText(transportSummary(trip));
-        dateTimeSummaryLabel.setText(formatSelectedDateTime());
+        dateOnlyLabel.setText(formatSelectedDateOnly());
+        timeOnlyLabel.setText(formatSelectedTimeOnly(trip));
         statusLabel.setText(statusText(trip));
         expectedArrivalLabel.setText(LanguageService.text(
                 "Verwacht: " + trip.getExpectedArrivalTime(),
@@ -292,6 +298,29 @@ public class RouteDetailController implements LanguageRefreshable {
         }
     }
 
+    private String formatSelectedDateOnly() {
+        String date = TripSearchState.getSelectedDate();
+
+        if (date == null || date.isBlank()) {
+            return LanguageService.text("Geen datum gekozen", "No date selected");
+        }
+
+        try {
+            return LocalDate.parse(date).format(DATE_FORMATTER);
+        } catch (DateTimeParseException exception) {
+            return date;
+        }
+    }
+
+    private String formatSelectedTimeOnly(Trip trip) {
+        String time = TripSearchState.getSelectedTime();
+
+        if (time == null || time.isBlank()) {
+            return trip.getDepartureTime();
+        }
+
+        return time;
+    }
     private LocalTime parseSelectedTime() {
         String time = TripSearchState.getSelectedTime();
 
