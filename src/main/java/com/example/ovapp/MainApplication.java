@@ -1,10 +1,10 @@
 package com.example.ovapp;
 
+import controller.SettingsController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import controller.SettingsController;  // <-- اضافه شد
 
 public class MainApplication extends Application {
 
@@ -24,6 +24,6 @@ public class MainApplication extends Application {
         stage.setScene(scene);
         stage.show();
 
-        SettingsController.applyInitialSettings(scene);
+        SettingsController.applyInitialSettings(stage.getScene());
     }
 }

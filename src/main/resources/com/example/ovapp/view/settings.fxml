@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Text?>
 
-<VBox spacing="25" alignment="TOP_CENTER"
+<VBox spacing="20" alignment="TOP_CENTER"
       xmlns="http://javafx.com/javafx/21"
       xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="controller.SettingsController"
@@ -14,34 +14,49 @@
     <Label fx:id="titleLabel" text="Instellingen" style="-fx-font-size: 28px; -fx-font-weight: bold;"/>
 
     <!-- Tekstgrootte -->
-    <VBox spacing="10">
+    <VBox spacing="8">
         <Label fx:id="textSizeLabel" text="Tekstgrootte" style="-fx-font-weight: bold;"/>
-        <HBox spacing="15" alignment="CENTER_LEFT">
-            <Label text="100%"/>
-            <Slider fx:id="textSizeSlider" min="100" max="200" value="100" showTickLabels="true"
-                    showTickMarks="true" majorTickUnit="25" minorTickCount="1" blockIncrement="25"
-                    prefWidth="300"/>
-            <Label fx:id="textSizeValueLabel" text="100000000000000%"/>
+        <HBox spacing="10" alignment="CENTER_LEFT">
+            <Label text="A" style="-fx-font-size: 14px; -fx-font-weight: bold;"/>
+            <Slider fx:id="textSizeSlider" min="100" max="200" value="150"
+                    showTickLabels="true" showTickMarks="true" majorTickUnit="25" minorTickCount="4"
+                    blockIncrement="25" prefWidth="350"/>
+            <Label text="A" style="-fx-font-size: 24px; -fx-font-weight: bold;"/>
         </HBox>
-        <Text fx:id="previewText" text="Dit is een voorbeeldtekst" style="-fx-font-size: 14px;"/>
+        <Text fx:id="previewText" text="Voorbeeld: Dit is een voorbeeldtekst" style="-fx-font-size: 14px;"/>
     </VBox>
 
-    <!-- Contrast -->
-    <VBox spacing="10">
-        <Label fx:id="contrastLabel" text="Contrast" style="-fx-font-weight: bold;"/>
-        <ComboBox fx:id="contrastCombo" promptText="Kies contrast" prefWidth="250"/>
+    <!-- Hoog contrast -->
+    <VBox spacing="8">
+        <Label fx:id="contrastLabel" text="Hoog contrast (kleurenweergave)" style="-fx-font-weight: bold;"/>
+        <Label text="Kies een weergave die het beste bij jou past:" style="-fx-font-size: 13px; -fx-text-fill: #555;"/>
+        <VBox spacing="5" style="-fx-padding: 0 0 0 20;">
+            <RadioButton fx:id="contrastStandard" text="Standaard contrast" userData="Standaard"/>
+            <RadioButton fx:id="contrastBlackWhite" text="Hoog contrast (zwart / wit)" userData="Hoog contrast (zwart/wit)"/>
+            <RadioButton fx:id="contrastYellowBlack" text="Hoog contrast (geel / zwart)" userData="Hoog contrast (geel/zwart)"/>
+        </VBox>
     </VBox>
 
-    <!-- Kleurenblindheid filter -->
-    <VBox spacing="10">
-        <Label fx:id="colorBlindLabel" text="Kleurenblindheid filter" style="-fx-font-weight: bold;"/>
-        <ComboBox fx:id="colorBlindCombo" promptText="Kies filter" prefWidth="280"/>
+    <!-- Kleurenblindheid filters -->
+    <VBox spacing="8">
+        <Label fx:id="colorBlindLabel" text="Kleurenblindheid filters" style="-fx-font-weight: bold;"/>
+        <Label text="Kies het type kleurenblindheid:" style="-fx-font-size: 13px; -fx-text-fill: #555;"/>
+        <VBox spacing="5" style="-fx-padding: 0 0 0 20;">
+            <RadioButton fx:id="filterNone" text="Geen filter" userData="Geen filter"/>
+            <RadioButton fx:id="filterProtan" text="Protanopie (roodblind)" userData="Protanopie (roodblind)"/>
+            <RadioButton fx:id="filterDeutan" text="Deuteranopie (groenblind)" userData="Deuteranopie (groenblind)"/>
+            <RadioButton fx:id="filterTritan" text="Tritanopie (blauwblind)" userData="Tritanopie (blauwblind)"/>
+        </VBox>
     </VBox>
 
-    <Button fx:id="resetButton" text="Standaard instellingen herstellen" onAction="#resetSettings"
-            prefWidth="280" prefHeight="40" style="-fx-background-color: #f0f0f0; -fx-border-color: #ccc;"/>
+    <Label fx:id="infoLabel" text="De wijzigingen worden direct toegepast op de app." style="-fx-font-size: 12px; -fx-text-fill: #555;"/>
 
-    <Button fx:id="backButton" text="Terug" onAction="#goBack" prefWidth="120"
-            style="-fx-background-color: transparent; -fx-font-size: 14px;"/>
+    <Region VBox.vgrow="ALWAYS"/>
+
+    <HBox alignment="CENTER">
+        <Button fx:id="resetButton" text="Standaard instellingen herstellen" onAction="#resetSettings"
+                prefWidth="300" prefHeight="40"
+                style="-fx-background-color: #d9534f; -fx-text-fill: white; -fx-font-weight: bold; -fx-border-radius: 5; -fx-background-radius: 5;"/>
+    </HBox>
 
 </VBox>

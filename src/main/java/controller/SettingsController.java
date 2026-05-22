@@ -12,15 +12,23 @@ public class SettingsController implements LanguageRefreshable {
     @FXML private Label titleLabel;
     @FXML private Label textSizeLabel;
     @FXML private Slider textSizeSlider;
-    @FXML private Label textSizeValueLabel;
     @FXML private Text previewText;
     @FXML private Label contrastLabel;
-    @FXML private ComboBox<String> contrastCombo;
     @FXML private Label colorBlindLabel;
-    @FXML private ComboBox<String> colorBlindCombo;
+    @FXML private Label infoLabel;
     @FXML private Button resetButton;
-    @FXML private Button backButton;
 
+    @FXML private RadioButton contrastStandard;
+    @FXML private RadioButton contrastBlackWhite;
+    @FXML private RadioButton contrastYellowBlack;
+
+    @FXML private RadioButton filterNone;
+    @FXML private RadioButton filterProtan;
+    @FXML private RadioButton filterDeutan;
+    @FXML private RadioButton filterTritan;
+
+    private ToggleGroup contrastGroup;
+    private ToggleGroup colorBlindGroup;
     private Preferences prefs;
 
     private static final String DEFAULT_CONTRAST = "Standaard";
@@ -29,101 +37,114 @@ public class SettingsController implements LanguageRefreshable {
 
     @FXML
     public void initialize() {
-        // Opties voor contrast (deze blijven altijd Nederlandstalig, zoals in wireframe)
-        contrastCombo.getItems().setAll(
-                "Standaard",
-                "Hoog contrast (zwart/wit)",
-                "Hoog contrast (geel/zwart)"
-        );
-        colorBlindCombo.getItems().setAll(
-                "Geen filter",
-                "Protanopie (roodblind)",
-                "Deuteranopie (groenblind)",
-                "Tritanopie (blauwblind)"
-        );
+        contrastGroup = new ToggleGroup();
+        contrastStandard.setToggleGroup(contrastGroup);
+        contrastBlackWhite.setToggleGroup(contrastGroup);
+        contrastYellowBlack.setToggleGroup(contrastGroup);
+
+        colorBlindGroup = new ToggleGroup();
+        filterNone.setToggleGroup(colorBlindGroup);
+        filterProtan.setToggleGroup(colorBlindGroup);
+        filterDeutan.setToggleGroup(colorBlindGroup);
+        filterTritan.setToggleGroup(colorBlindGroup);
 
         prefs = Preferences.userNodeForPackage(getClass());
 
-        // Laad opgeslagen waarden
         double savedSize = prefs.getDouble("textSize", DEFAULT_TEXT_SIZE);
         String savedContrast = prefs.get("contrast", DEFAULT_CONTRAST);
         String savedFilter = prefs.get("colorFilter", DEFAULT_COLOR_FILTER);
 
         textSizeSlider.setValue(savedSize);
-        contrastCombo.setValue(savedContrast);
-        colorBlindCombo.setValue(savedFilter);
+        updatePreviewTextSize(savedSize);
+        setSelectedRadio(contrastGroup, savedContrast);
+        setSelectedRadio(colorBlindGroup, savedFilter);
 
-        // Pas direct toe
-        applyTextSize(savedSize);
-        applyContrast(savedContrast);
-        applyColorFilter(savedFilter);
+        applyAllSettings();
 
-        // Listeners voor veranderingen
         textSizeSlider.valueProperty().addListener((obs, oldVal, newVal) -> {
             double val = newVal.doubleValue();
-            textSizeValueLabel.setText((int) val + "%");
-            applyTextSize(val);
+            updatePreviewTextSize(val);
             prefs.putDouble("textSize", val);
+            applyAllSettings();
         });
-        contrastCombo.valueProperty().addListener((obs, oldVal, newVal) -> {
+
+        contrastGroup.selectedToggleProperty().addListener((obs, oldVal, newVal) -> {
             if (newVal != null) {
-                applyContrast(newVal);
-                prefs.put("contrast", newVal);
+                String contrast = (String) newVal.getUserData();
+                prefs.put("contrast", contrast);
+                applyAllSettings();
             }
         });
-        colorBlindCombo.valueProperty().addListener((obs, oldVal, newVal) -> {
+
+        colorBlindGroup.selectedToggleProperty().addListener((obs, oldVal, newVal) -> {
             if (newVal != null) {
-                applyColorFilter(newVal);
-                prefs.put("colorFilter", newVal);
+                String filter = (String) newVal.getUserData();
+                prefs.put("colorFilter", filter);
+                applyAllSettings();
             }
         });
 
         refreshLanguage();
     }
 
-    private void applyTextSize(double percent) {
+    private void setSelectedRadio(ToggleGroup group, String value) {
+        for (Toggle toggle : group.getToggles()) {
+            if (toggle.getUserData() != null && toggle.getUserData().equals(value)) {
+                group.selectToggle(toggle);
+                break;
+            }
+        }
+    }
+
+    private void updatePreviewTextSize(double percent) {
         double fontSize = 14 * (percent / 100.0);
         previewText.setStyle("-fx-font-size: " + fontSize + "px;");
     }
 
-    private void applyContrast(String contrast) {
+    private void applyAllSettings() {
         Scene scene = getScene();
         if (scene == null) return;
+
+        double textSizePercent = prefs.getDouble("textSize", DEFAULT_TEXT_SIZE);
+        String contrast = prefs.get("contrast", DEFAULT_CONTRAST);
+        String colorFilter = prefs.get("colorFilter", DEFAULT_COLOR_FILTER);
+
+        double baseFont = 14 * (textSizePercent / 100.0);
+        StringBuilder style = new StringBuilder();
+        style.append("-fx-font-size: ").append(baseFont).append("px;");
+
         switch (contrast) {
             case "Hoog contrast (zwart/wit)":
-                scene.getRoot().setStyle("-fx-base: black; -fx-background: black; -fx-text-fill: white;");
+                style.append("-fx-base: black; -fx-background: black; -fx-text-fill: white; -fx-control-inner-background: black;");
                 break;
             case "Hoog contrast (geel/zwart)":
-                scene.getRoot().setStyle("-fx-base: black; -fx-background: black; -fx-text-fill: yellow;");
+                style.append("-fx-base: black; -fx-background: black; -fx-text-fill: yellow; -fx-control-inner-background: black;");
                 break;
             default:
-                scene.getRoot().setStyle("");
+                style.append("-fx-base: white; -fx-background: white; -fx-text-fill: black;");
                 break;
         }
-    }
 
-    private void applyColorFilter(String filter) {
-        Scene scene = getScene();
-        if (scene == null) return;
-        switch (filter) {
+        switch (colorFilter) {
             case "Protanopie (roodblind)":
-                scene.getRoot().setStyle("-fx-text-fill: #888888;");
+                style.append("-fx-opacity: 0.92;");
                 break;
             case "Deuteranopie (groenblind)":
-                scene.getRoot().setStyle("-fx-text-fill: #999999;");
+                style.append("-fx-opacity: 0.95;");
                 break;
             case "Tritanopie (blauwblind)":
-                scene.getRoot().setStyle("-fx-text-fill: #aaaaaa;");
+                style.append("-fx-opacity: 0.90;");
                 break;
             default:
-                scene.getRoot().setStyle("-fx-text-fill: black;");
                 break;
         }
+
+        scene.getRoot().setStyle(style.toString());
     }
 
     private Scene getScene() {
         try {
-            return titleLabel.getScene();
+            return previewText.getScene();
         } catch (Exception e) {
             return null;
         }
@@ -132,16 +153,15 @@ public class SettingsController implements LanguageRefreshable {
     @FXML
     private void resetSettings() {
         textSizeSlider.setValue(DEFAULT_TEXT_SIZE);
-        contrastCombo.setValue(DEFAULT_CONTRAST);
-        colorBlindCombo.setValue(DEFAULT_COLOR_FILTER);
-
-        applyTextSize(DEFAULT_TEXT_SIZE);
-        applyContrast(DEFAULT_CONTRAST);
-        applyColorFilter(DEFAULT_COLOR_FILTER);
+        setSelectedRadio(contrastGroup, DEFAULT_CONTRAST);
+        setSelectedRadio(colorBlindGroup, DEFAULT_COLOR_FILTER);
 
         prefs.putDouble("textSize", DEFAULT_TEXT_SIZE);
         prefs.put("contrast", DEFAULT_CONTRAST);
         prefs.put("colorFilter", DEFAULT_COLOR_FILTER);
+
+        updatePreviewTextSize(DEFAULT_TEXT_SIZE);
+        applyAllSettings();
 
         Alert alert = new Alert(Alert.AlertType.INFORMATION,
                 LanguageService.text("Instellingen zijn teruggezet naar standaard.",
@@ -150,38 +170,35 @@ public class SettingsController implements LanguageRefreshable {
         alert.showAndWait();
     }
 
-    @FXML
-    private void goBack() {
-        MainLayoutController.loadPage("home.fxml");
-    }
-
     @Override
     public void refreshLanguage() {
         titleLabel.setText(LanguageService.text("Instellingen", "Settings"));
         textSizeLabel.setText(LanguageService.text("Tekstgrootte", "Text size"));
-        contrastLabel.setText(LanguageService.text("Contrast", "Contrast"));
-        colorBlindLabel.setText(LanguageService.text("Kleurenblindheid filter", "Color blindness filter"));
+        contrastLabel.setText(LanguageService.text("Hoog contrast (kleurenweergave)", "High contrast (color display)"));
+        colorBlindLabel.setText(LanguageService.text("Kleurenblindheid filters", "Color blindness filters"));
+        infoLabel.setText(LanguageService.text("De wijzigingen worden direct toegepast op de app.",
+                "Changes are applied to the app immediately."));
         resetButton.setText(LanguageService.text("Standaard instellingen herstellen", "Reset to default settings"));
-        backButton.setText(LanguageService.text("Terug", "Back"));
     }
 
     public static void applyInitialSettings(Scene scene) {
+        if (scene == null) return;
         Preferences prefs = Preferences.userNodeForPackage(SettingsController.class);
-        String savedContrast = prefs.get("contrast", DEFAULT_CONTRAST);
-        String savedFilter = prefs.get("colorFilter", DEFAULT_COLOR_FILTER);
-        switch (savedContrast) {
+        double textSize = prefs.getDouble("textSize", DEFAULT_TEXT_SIZE);
+        String contrast = prefs.get("contrast", DEFAULT_CONTRAST);
+        double baseFont = 14 * (textSize / 100.0);
+        StringBuilder style = new StringBuilder();
+        style.append("-fx-font-size: ").append(baseFont).append("px;");
+        switch (contrast) {
             case "Hoog contrast (zwart/wit)":
-                scene.getRoot().setStyle("-fx-base: black; -fx-background: black; -fx-text-fill: white;");
+                style.append("-fx-base: black; -fx-background: black; -fx-text-fill: white;");
                 break;
             case "Hoog contrast (geel/zwart)":
-                scene.getRoot().setStyle("-fx-base: black; -fx-background: black; -fx-text-fill: yellow;");
+                style.append("-fx-base: black; -fx-background: black; -fx-text-fill: yellow;");
                 break;
             default:
-                scene.getRoot().setStyle("");
                 break;
         }
-        if (!savedFilter.equals(DEFAULT_COLOR_FILTER)) {
-            scene.getRoot().setStyle("-fx-text-fill: #aaaaaa;");
-        }
+        scene.getRoot().setStyle(style.toString());
     }
 }
