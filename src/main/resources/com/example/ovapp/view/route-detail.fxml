@@ -251,8 +251,8 @@
                       alignment="CENTER"
                       managed="false"
                       visible="false"
-                      maxWidth="320"
-                      prefWidth="320"
+                      maxWidth="600"
+                      prefWidth="600"
                       spacing="12"
                       style="-fx-border-color: #999;
                              -fx-border-width: 1.5;
@@ -263,6 +263,8 @@
                            style="-fx-font-size: 20px; -fx-font-weight: bold;" />
 
                     <Label fx:id="favoriteMessageLabel"
+                           prefWidth="420"
+                           wrapText="true" 
                            style="-fx-font-size: 14px; -fx-font-weight: bold;" />
 
                     <Button text="x"
