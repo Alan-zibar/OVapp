@@ -1,7 +1,9 @@
 package controller;
 
 import Service.LanguageService;
+import Service.SessionService;
 import Service.TripSearchState;
+import Service.FavoriteService;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -15,12 +17,13 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import model.Trip;
 import model.Trip.TripStop;
-
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.List;
+
+
 
 public class RouteDetailController implements LanguageRefreshable {
 
@@ -80,6 +83,7 @@ public class RouteDetailController implements LanguageRefreshable {
     @FXML
     private void initialize() {
         refreshLanguage();
+
     }
 
     @Override
@@ -93,7 +97,6 @@ public class RouteDetailController implements LanguageRefreshable {
         distanceTitleLabel.setText(LanguageService.text("Afstand", "Distance"));
         transfersTitleLabel.setText(LanguageService.text("Overstappen", "Transfers"));
         travelDataButton.setText(LanguageService.text("Gegevens tijdens de reis  >", "Journey information  >"));
-        favoriteMessageLabel.setText(LanguageService.text("Toegevoegd aan favorieten", "Added to favorites"));
 
         transportIconLabel.setText("BUS".equals(trip.getTransportMode()) ? "\uD83D\uDE8C" : "\uD83D\uDE86");
         timeRangeLabel.setText(trip.getDepartureTime() + "  ->  " + trip.getExpectedArrivalTime());
@@ -350,9 +353,39 @@ public class RouteDetailController implements LanguageRefreshable {
 
     @FXML
     private void addToFavorites() {
+        Trip trip =  currentTrip();
+
+    if (!SessionService.isLoggedIn()) {
         favoriteMessageBox.setVisible(true);
         favoriteMessageBox.setManaged(true);
-        favoriteButton.setText("\u2605  " + LanguageService.text("Opgeslagen als favoriet", "Saved as favorite"));
+        favoriteMessageLabel.setText(
+            LanguageService.text(
+            "Log eerst in om favorieten op te slaan",
+            "Please log in first to save favorites")
+        );
+
+        return;        
+    }
+
+    if (FavoriteService.isFavorite(trip)) {
+        favoriteMessageBox.setVisible(true);
+        favoriteMessageBox.setManaged(true);
+        favoriteMessageLabel.setText(
+            LanguageService.text(
+            "Deze route staat al in je favorieten",
+            "This route is already in je favoriets")
+        );
+        return;
+        
+    }    
+        FavoriteService.addFavorite(trip);
+        favoriteMessageBox.setVisible(true);
+        favoriteMessageBox.setManaged(true);
+        favoriteMessageLabel.setText(LanguageService.text
+            ("Toegevoegd als favorieten",
+        "Saved as favorites"));
+
+
     }
 
     @FXML
