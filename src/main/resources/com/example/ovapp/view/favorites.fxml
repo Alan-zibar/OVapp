@@ -20,7 +20,7 @@
                  -fx-font-weight: bold;" />
       </HBox>              
 
-       <Label text="Mijn favorieten"
+       <Label fx:id="titleLabel"
               style="-fx-font-size: 28px; -fx-font-weight: bold;" />
 
        <VBox fx:id="favoritesContainer"

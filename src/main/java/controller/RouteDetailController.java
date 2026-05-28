@@ -373,7 +373,7 @@ public class RouteDetailController implements LanguageRefreshable {
         favoriteMessageLabel.setText(
             LanguageService.text(
             "Deze route staat al in je favorieten",
-            "This route is already in je favoriets")
+            "This route is already in your favoriets")
         );
         return;
         

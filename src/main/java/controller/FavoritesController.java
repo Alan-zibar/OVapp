@@ -28,16 +28,21 @@ public class FavoritesController implements LanguageRefreshable {
 
     @FXML
     private Button backButton;
+
+    @FXML
+    private Label titleLabel;
     
     @FXML
     private void initialize() {
 
         backButton.setText(LanguageService.text(
             "← Terug naar home",
-            "← Back to home"
+            "← Back to home" ));
 
 
-        ));
+        titleLabel.setText(LanguageService.text(
+            "Mijn Favorieten",
+            "My Favorites"));     
        
         for (model.Trip trip : FavoriteService.getFavorites()){
             HBox card = new HBox(25);
@@ -101,6 +106,10 @@ public class FavoritesController implements LanguageRefreshable {
             "← Terug naar home",
             "← Back to home"
         ));
+
+        titleLabel.setText(LanguageService.text(
+            "Mijn Favorieten",
+            "My Favorites"));
             
 
     }
