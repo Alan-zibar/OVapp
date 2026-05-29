@@ -5,6 +5,9 @@ import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.text.Text;
+import javafx.scene.effect.ColorAdjust;
+import javafx.scene.Node;
+import javafx.scene.Parent;
 import java.util.prefs.Preferences;
 
 public class SettingsController implements LanguageRefreshable {
@@ -110,36 +113,100 @@ public class SettingsController implements LanguageRefreshable {
         String colorFilter = prefs.get("colorFilter", DEFAULT_COLOR_FILTER);
 
         double baseFont = 14 * (textSizePercent / 100.0);
-        StringBuilder style = new StringBuilder();
-        style.append("-fx-font-size: ").append(baseFont).append("px;");
+        scene.getRoot().setStyle("-fx-font-size: " + baseFont + "px;");
+        applyFontSizeToAllNodes(scene.getRoot(), baseFont);
 
+        StringBuilder contrastStyle = new StringBuilder();
         switch (contrast) {
             case "Hoog contrast (zwart/wit)":
-                style.append("-fx-base: black; -fx-background: black; -fx-text-fill: white; -fx-control-inner-background: black;");
+                contrastStyle.append("-fx-base: black; -fx-background: black; -fx-text-fill: white; -fx-control-inner-background: black;");
                 break;
             case "Hoog contrast (geel/zwart)":
-                style.append("-fx-base: black; -fx-background: black; -fx-text-fill: yellow; -fx-control-inner-background: black;");
+                contrastStyle.append("-fx-base: black; -fx-background: black; -fx-text-fill: yellow; -fx-control-inner-background: black;");
                 break;
             default:
-                style.append("-fx-base: white; -fx-background: white; -fx-text-fill: black;");
+                contrastStyle.append("-fx-base: white; -fx-background: white; -fx-text-fill: black;");
                 break;
         }
+        scene.getRoot().setStyle(scene.getRoot().getStyle() + ";" + contrastStyle.toString());
+        applyContrastToAllNodes(scene.getRoot(), contrast);
 
-        switch (colorFilter) {
+        applyColorFilterEffect(scene, colorFilter);
+    }
+
+    private void applyFontSizeToAllNodes(Node node, double fontSize) {
+        String style = "-fx-font-size: " + fontSize + "px;";
+        if (node instanceof Label) ((Label) node).setStyle(style);
+        else if (node instanceof Button) ((Button) node).setStyle(style);
+        else if (node instanceof Text) ((Text) node).setStyle(style);
+        else if (node instanceof TextField) ((TextField) node).setStyle(style);
+        else if (node instanceof PasswordField) ((PasswordField) node).setStyle(style);
+        else if (node instanceof ComboBox) ((ComboBox<?>) node).setStyle(style);
+        else if (node instanceof RadioButton) ((RadioButton) node).setStyle(style);
+        else if (node instanceof ToggleButton) ((ToggleButton) node).setStyle(style);
+        else if (node instanceof MenuButton) ((MenuButton) node).setStyle(style);
+        else if (node instanceof DatePicker) ((DatePicker) node).setStyle(style);
+        else if (node instanceof Spinner) ((Spinner<?>) node).setStyle(style);
+        if (node instanceof Parent) {
+            for (Node child : ((Parent) node).getChildrenUnmodifiable()) {
+                applyFontSizeToAllNodes(child, fontSize);
+            }
+        }
+    }
+
+    private void applyContrastToAllNodes(Node node, String contrast) {
+        String textFill = "";
+        String background = "";
+        if ("Hoog contrast (zwart/wit)".equals(contrast)) {
+            textFill = "white";
+            background = "black";
+        } else if ("Hoog contrast (geel/zwart)".equals(contrast)) {
+            textFill = "yellow";
+            background = "black";
+        } else {
+            textFill = "black";
+            background = "white";
+        }
+        String style = "-fx-text-fill: " + textFill + "; -fx-background-color: " + background + ";";
+        if (node instanceof Label) ((Label) node).setStyle(((Label) node).getStyle() + ";" + style);
+        else if (node instanceof Button) ((Button) node).setStyle(((Button) node).getStyle() + ";" + style);
+        else if (node instanceof TextField) ((TextField) node).setStyle(((TextField) node).getStyle() + ";" + style);
+        else if (node instanceof PasswordField) ((PasswordField) node).setStyle(((PasswordField) node).getStyle() + ";" + style);
+        else if (node instanceof ComboBox) ((ComboBox<?>) node).setStyle(((ComboBox<?>) node).getStyle() + ";" + style);
+        else if (node instanceof RadioButton) ((RadioButton) node).setStyle(((RadioButton) node).getStyle() + ";" + style);
+        else if (node instanceof ToggleButton) ((ToggleButton) node).setStyle(((ToggleButton) node).getStyle() + ";" + style);
+        else if (node instanceof MenuButton) ((MenuButton) node).setStyle(((MenuButton) node).getStyle() + ";" + style);
+        else if (node instanceof DatePicker) ((DatePicker) node).setStyle(((DatePicker) node).getStyle() + ";" + style);
+        else if (node instanceof Spinner) ((Spinner<?>) node).setStyle(((Spinner<?>) node).getStyle() + ";" + style);
+        if (node instanceof Parent) {
+            for (Node child : ((Parent) node).getChildrenUnmodifiable()) {
+                applyContrastToAllNodes(child, contrast);
+            }
+        }
+    }
+
+    private void applyColorFilterEffect(Scene scene, String filter) {
+        if (scene == null) return;
+        scene.getRoot().setEffect(null);
+        if ("Geen filter".equals(filter)) return;
+        ColorAdjust colorAdjust = new ColorAdjust();
+        switch (filter) {
             case "Protanopie (roodblind)":
-                style.append("-fx-opacity: 0.92;");
+                colorAdjust.setHue(-0.6);
+                colorAdjust.setSaturation(-0.8);
                 break;
             case "Deuteranopie (groenblind)":
-                style.append("-fx-opacity: 0.95;");
+                colorAdjust.setHue(0.5);
+                colorAdjust.setSaturation(-0.8);
                 break;
             case "Tritanopie (blauwblind)":
-                style.append("-fx-opacity: 0.90;");
+                colorAdjust.setHue(0.7);
+                colorAdjust.setSaturation(-0.9);
                 break;
             default:
-                break;
+                return;
         }
-
-        scene.getRoot().setStyle(style.toString());
+        scene.getRoot().setEffect(colorAdjust);
     }
 
     private Scene getScene() {
@@ -155,14 +222,11 @@ public class SettingsController implements LanguageRefreshable {
         textSizeSlider.setValue(DEFAULT_TEXT_SIZE);
         setSelectedRadio(contrastGroup, DEFAULT_CONTRAST);
         setSelectedRadio(colorBlindGroup, DEFAULT_COLOR_FILTER);
-
         prefs.putDouble("textSize", DEFAULT_TEXT_SIZE);
         prefs.put("contrast", DEFAULT_CONTRAST);
         prefs.put("colorFilter", DEFAULT_COLOR_FILTER);
-
         updatePreviewTextSize(DEFAULT_TEXT_SIZE);
         applyAllSettings();
-
         Alert alert = new Alert(Alert.AlertType.INFORMATION,
                 LanguageService.text("Instellingen zijn teruggezet naar standaard.",
                         "Settings have been reset to default."),
@@ -186,19 +250,43 @@ public class SettingsController implements LanguageRefreshable {
         Preferences prefs = Preferences.userNodeForPackage(SettingsController.class);
         double textSize = prefs.getDouble("textSize", DEFAULT_TEXT_SIZE);
         String contrast = prefs.get("contrast", DEFAULT_CONTRAST);
+        String colorFilter = prefs.get("colorFilter", DEFAULT_COLOR_FILTER);
         double baseFont = 14 * (textSize / 100.0);
-        StringBuilder style = new StringBuilder();
-        style.append("-fx-font-size: ").append(baseFont).append("px;");
+        scene.getRoot().setStyle("-fx-font-size: " + baseFont + "px;");
+        SettingsController temp = new SettingsController();
+        temp.applyFontSizeToAllNodes(scene.getRoot(), baseFont);
+        StringBuilder contrastStyle = new StringBuilder();
         switch (contrast) {
             case "Hoog contrast (zwart/wit)":
-                style.append("-fx-base: black; -fx-background: black; -fx-text-fill: white;");
+                contrastStyle.append("-fx-base: black; -fx-background: black; -fx-text-fill: white; -fx-control-inner-background: black;");
                 break;
             case "Hoog contrast (geel/zwart)":
-                style.append("-fx-base: black; -fx-background: black; -fx-text-fill: yellow;");
+                contrastStyle.append("-fx-base: black; -fx-background: black; -fx-text-fill: yellow; -fx-control-inner-background: black;");
                 break;
             default:
+                contrastStyle.append("-fx-base: white; -fx-background: white; -fx-text-fill: black;");
                 break;
         }
-        scene.getRoot().setStyle(style.toString());
+        scene.getRoot().setStyle(scene.getRoot().getStyle() + ";" + contrastStyle.toString());
+        temp.applyContrastToAllNodes(scene.getRoot(), contrast);
+        ColorAdjust colorAdjust = new ColorAdjust();
+        switch (colorFilter) {
+            case "Protanopie (roodblind)":
+                colorAdjust.setHue(-0.6);
+                colorAdjust.setSaturation(-0.8);
+                break;
+            case "Deuteranopie (groenblind)":
+                colorAdjust.setHue(0.5);
+                colorAdjust.setSaturation(-0.8);
+                break;
+            case "Tritanopie (blauwblind)":
+                colorAdjust.setHue(0.7);
+                colorAdjust.setSaturation(-0.9);
+                break;
+            default:
+                scene.getRoot().setEffect(null);
+                return;
+        }
+        scene.getRoot().setEffect(colorAdjust);
     }
 }

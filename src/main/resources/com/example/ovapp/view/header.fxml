@@ -7,11 +7,9 @@
 <HBox alignment="CENTER_LEFT"
       prefHeight="110"
       spacing="20"
-      style="-fx-border-color: transparent transparent #333 transparent;
-             -fx-border-width: 0 0 2 0;
-             -fx-padding: 25 45 25 45;"
-      xmlns:fx="http://javafx.com/fxml/1"
+      style="-fx-border-color: transparent transparent #333 transparent; -fx-border-width: 0 0 2 0; -fx-padding: 25 45 25 45;"
       xmlns="http://javafx.com/javafx/17.0.12"
+      xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="controller.HeaderController">
 
     <ImageView fitHeight="50" fitWidth="50" preserveRatio="true">
@@ -20,10 +18,9 @@
         </image>
     </ImageView>
 
-    <Label text="ToWhere"
-           style="-fx-font-size: 32px; -fx-font-weight: bold;" />
+    <Label text="ToWhere" style="-fx-font-size: 32px; -fx-font-weight: bold;" />
 
-    <Region HBox.hgrow="ALWAYS"/>
+    <Region HBox.hgrow="ALWAYS" />
 
     <HBox alignment="CENTER" spacing="8">
         <Label text="🕒" style="-fx-font-size: 24px;" />
@@ -31,13 +28,12 @@
         <Label fx:id="currentTimeLabel" text="--:--:--" style="-fx-font-size: 18px; -fx-font-weight: bold;" />
     </HBox>
 
-    <Region prefWidth="5"/>
+    <Region prefWidth="20" />
 
-    <HBox alignment="CENTER" spacing="-6">
+    <HBox alignment="CENTER" spacing="8">
         <Label text="🌐" style="-fx-font-size: 28px;" />
-        <MenuButton fx:id="languageMenuButton"
-                    text="NL"
-                    style="-fx-background-color: transparent; -fx-font-size: 16px; -fx-padding: 0;">
+        <MenuButton fx:id="languageMenuButton" text="NL"
+                    style="-fx-background-color: white; -fx-border-color: #555; -fx-border-width: 1.5; -fx-font-size: 16px; -fx-padding: 5 12 5 12; -fx-border-radius: 5; -fx-background-radius: 5;">
             <items>
                 <MenuItem text="Nederlands" onAction="#setDutchLanguage" />
                 <MenuItem text="English" onAction="#setEnglishLanguage" />
@@ -45,27 +41,18 @@
         </MenuButton>
     </HBox>
 
-    <Region prefWidth="8"/>
+    <Region prefWidth="15" />
 
     <HBox alignment="CENTER" spacing="12">
-        <Button fx:id="loginTopButton"
-                text="Inloggen"
-                onAction="#goToLogin"
-                prefWidth="145"
-                prefHeight="42"
+        <Button fx:id="loginTopButton" text="Inloggen" onAction="#goToLogin"
+                prefWidth="145" prefHeight="42"
                 style="-fx-background-color: white; -fx-border-color: #555; -fx-border-width: 1.5; -fx-font-size: 16px;">
             <graphic>
                 <Label text="👤" style="-fx-font-size: 21px;" />
             </graphic>
         </Button>
-
-        <Button fx:id="logoutTopButton"
-                text="Uitloggen"
-                onAction="#handleLogout"
-                prefWidth="145"
-                prefHeight="42"
-                visible="false"
-                managed="false"
+        <Button fx:id="logoutTopButton" text="Uitloggen" onAction="#handleLogout"
+                prefWidth="145" prefHeight="42" visible="false" managed="false"
                 style="-fx-background-color: white; -fx-border-color: #555; -fx-border-width: 1.5; -fx-font-size: 16px;">
             <graphic>
                 <Label text="↪" style="-fx-font-size: 21px;" />
