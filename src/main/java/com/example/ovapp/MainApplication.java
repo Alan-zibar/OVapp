@@ -9,9 +9,9 @@ public class MainApplication extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/ovapp/login.fxml"));
-        Scene scene = new Scene(loader.load());
-        stage.setTitle("Inloggen - OVapp");
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/ovapp/view/home.fxml"));
+        Scene scene = new Scene(loader.load(), 1100, 700);
+        stage.setTitle("ToWhere");
         stage.setScene(scene);
         stage.show();
     }

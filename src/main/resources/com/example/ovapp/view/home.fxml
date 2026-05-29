@@ -2,204 +2,152 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
 
 <BorderPane xmlns:fx="http://javafx.com/fxml"
             fx:controller="controller.HomeController"
             prefWidth="1100"
-            prefHeight="650"
-            style="-fx-background-color: white;">
+            prefHeight="700">
 
+    <!-- TOP BALK -->
     <top>
-        <HBox alignment="CENTER_LEFT"
-              spacing="20"
-              prefHeight="110"
-              style="-fx-border-color: transparent transparent #333 transparent; -fx-border-width: 0 0 2 0; -fx-padding: 25 45 25 45;">
-            <ImageView fitWidth="50" fitHeight="50" preserveRatio="true">
-                <image>
-                    <Image url="@/com/example/ovapp/images/ToWhere.png"/>
-                </image>
-            </ImageView>
+        <HBox spacing="15" alignment="CENTER_LEFT"
+              style="-fx-background-color: #f5f5f5; -fx-padding: 10 20; -fx-border-color: #ddd; -fx-border-width: 0 0 1 0;">
+            <Label text="ToWhere" style="-fx-font-size: 32px; -fx-font-weight: bold;"/>
 
-            <Label text="ToWhere"
-                   style="-fx-font-size: 32px; -fx-font-weight: bold;" />
-
-            <Region HBox.hgrow="ALWAYS" />
+            <Region HBox.hgrow="ALWAYS"/>
 
             <HBox alignment="CENTER" spacing="8">
-                <Label text="&#x1F552;" style="-fx-font-size: 24px;" />
-                <Label text="Huidige tijd:" style="-fx-font-size: 15px;" />
+                <Label text="Huidige tijd:" style="-fx-font-size: 15px;"/>
                 <Label fx:id="currentTimeLabel"
                        text="--:--:--"
-                       style="-fx-font-size: 18px; -fx-font-weight: bold;" />
+                       style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
             </HBox>
 
-            <Label text="&#x1F310;" style="-fx-font-size: 28px;" />
-            <Label text="NL" style="-fx-font-size: 16px;" />
+            <Label text="NL" style="-fx-font-size: 16px;"/>
 
-            <Button text="&#x1F464;  Inloggen"
+            <Button text="Inloggen"
                     onAction="#goToLogin"
                     prefWidth="145"
                     prefHeight="42"
-                    style="-fx-background-color: white; -fx-border-color: #555; -fx-border-width: 1.5; -fx-font-size: 16px;" />
+                    style="-fx-background-color: #0078D7; -fx-text-fill: white; -fx-font-weight: bold;"/>
         </HBox>
     </top>
 
+    <!-- LINKER MENU -->
     <left>
         <VBox spacing="16"
               prefWidth="260"
-              style="-fx-border-color: transparent #999 transparent transparent;
-                     -fx-border-width: 0 1.5 0 0;
-                     -fx-padding: 45 30 30 45;">
-
-            <Label text="Menu"
-                   style="-fx-font-size: 20px; -fx-font-weight: bold;" />
-
-            <Button text="&#x2302;  Home"
+              style="-fx-padding: 45 20 30 30; -fx-border-color: transparent #999 transparent transparent; -fx-border-width: 0 1.5 0 0;">
+            <Button text="Home"
                     onAction="#goToHome"
                     prefWidth="190"
                     prefHeight="42"
                     alignment="CENTER_LEFT"
-                    style="-fx-background-color: transparent; -fx-font-size: 16px;" />
+                    style="-fx-background-color: transparent; -fx-font-size: 16px;"/>
 
-            <Button text="&#x1F689;  Reis plannen"
+            <Button text="Reis plannen"
                     onAction="#goToPlanTrip"
                     prefWidth="190"
                     prefHeight="42"
                     alignment="CENTER_LEFT"
-                    style="-fx-background-color: transparent; -fx-font-size: 16px;" />
+                    style="-fx-background-color: transparent; -fx-font-size: 16px;"/>
 
-            <Button text="&#x2606;  Favorieten"
+            <Button text="Favorieten"
                     onAction="#goToFavorites"
                     prefWidth="190"
                     prefHeight="42"
                     alignment="CENTER_LEFT"
-                    style="-fx-background-color: transparent; -fx-font-size: 16px;" />
+                    style="-fx-background-color: transparent; -fx-font-size: 16px;"/>
 
-            <Button text="&#x25F7;  Geschiedenis"
+            <Button text="Geschiedenis"
                     onAction="#goToHistory"
                     prefWidth="190"
                     prefHeight="42"
                     alignment="CENTER_LEFT"
-                    style="-fx-background-color: transparent; -fx-font-size: 16px;" />
+                    style="-fx-background-color: transparent; -fx-font-size: 16px;"/>
 
-            <Button text="&#x2699;  Instellingen"
+            <Button text="Instellingen"
                     onAction="#goToSettings"
                     prefWidth="190"
                     prefHeight="42"
                     alignment="CENTER_LEFT"
-                    style="-fx-background-color: transparent; -fx-font-size: 16px;" />
+                    style="-fx-background-color: transparent; -fx-font-size: 16px;"/>
         </VBox>
     </left>
 
+    <!-- CENTRUM (REIS PLANNEN) -->
     <center>
-        <VBox spacing="15"
-              fillWidth="false"
-              style="-fx-padding: 30 0 0 45;">
-
+        <VBox spacing="30" alignment="TOP_CENTER"
+              style="-fx-padding: 30;">
             <Label text="Plan je reis"
-                   style="-fx-font-size: 30px; -fx-font-weight: bold;" />
+                   style="-fx-font-size: 36px; -fx-font-weight: bold;"/>
 
             <VBox spacing="25"
                   prefWidth="900"
                   maxWidth="900"
-                  prefHeight="390"
-                  style="-fx-border-color: #777;
-                         -fx-border-width: 1.5;
-                         -fx-padding: 35;
-                         -fx-background-color: white;">
+                  style="-fx-border-color: #777; -fx-border-width: 1.5; -fx-padding: 35; -fx-background-color: white;">
 
+                <!-- Van / Naar / Wissel -->
                 <HBox spacing="40" alignment="CENTER">
+                    <!-- VAN -->
                     <VBox spacing="14" alignment="CENTER">
-                        <Label text="Van"
-                               style="-fx-font-size: 24px; -fx-font-weight: bold;" />
-
-                        <HBox alignment="CENTER_LEFT"
-                              spacing="14"
+                        <Label text="Van" style="-fx-font-size: 24px; -fx-font-weight: bold;"/>
+                        <HBox spacing="10"
                               prefWidth="370"
                               prefHeight="80"
-                              style="-fx-border-color: #b5b5b5;
-                                     -fx-border-width: 1;
-                                     -fx-background-color: linear-gradient(to bottom, #eeeeee, #dddddd);
-                                     -fx-padding: 0 14 0 14;">
-
-                            <Label text="&#x1F4CD;"
-                                   style="-fx-font-size: 28px; -fx-font-weight: bold;" />
-
+                              style="-fx-border-color: #b5b5b5; -fx-border-width: 1; -fx-background-color: linear-gradient(to bottom, #eeeeee, #dddddd); -fx-padding: 0 14;">
                             <ComboBox fx:id="fromComboBox"
                                       promptText="Kies vertrekstation"
                                       prefWidth="300"
-                                      prefHeight="70"
-                                      style="-fx-background-color: transparent; -fx-font-size: 16px;" />
+                                      style="-fx-background-color: transparent; -fx-font-size: 16px;"/>
                         </HBox>
                     </VBox>
 
-                    <Button text="&#x21C4;"
+                    <!-- WISSEL KNOP -->
+                    <Button text="Wissel"
                             onAction="#swapStations"
-                            prefWidth="60"
+                            prefWidth="80"
                             prefHeight="55"
-                            style="-fx-font-size: 26px;
-                                   -fx-font-family: 'Arial';
-                                   -fx-background-color: white;
-                                   -fx-border-color: #777;
-                                   -fx-border-width: 1.5;">
+                            style="-fx-font-size: 16px; -fx-background-color: white; -fx-border-color: #777; -fx-border-width: 1.5;">
                         <HBox.margin>
                             <Insets top="45" right="0" bottom="0" left="0"/>
                         </HBox.margin>
                     </Button>
 
+                    <!-- NAAR -->
                     <VBox spacing="14" alignment="CENTER">
-                        <Label text="Naar"
-                               style="-fx-font-size: 24px; -fx-font-weight: bold;" />
-
-                        <HBox alignment="CENTER_LEFT"
-                              spacing="14"
-                              prefWidth="400"
+                        <Label text="Naar" style="-fx-font-size: 24px; -fx-font-weight: bold;"/>
+                        <HBox spacing="10"
+                              prefWidth="370"
                               prefHeight="80"
-                              style="-fx-border-color: #b5b5b5;
-                                     -fx-border-width: 1;
-                                     -fx-background-color: linear-gradient(to bottom, #eeeeee, #dddddd);
-                                     -fx-padding: 0 14 0 14;">
-
-                            <Label text="&#x1F4CD;"
-                                   style="-fx-font-size: 28px; -fx-font-weight: bold;" />
-
+                              style="-fx-border-color: #b5b5b5; -fx-border-width: 1; -fx-background-color: linear-gradient(to bottom, #eeeeee, #dddddd); -fx-padding: 0 14;">
                             <ComboBox fx:id="toComboBox"
                                       promptText="Kies aankomststation"
-                                      prefWidth="325"
-                                      prefHeight="70"
-                                      style="-fx-background-color: transparent; -fx-font-size: 16px;" />
+                                      prefWidth="300"
+                                      style="-fx-background-color: transparent; -fx-font-size: 16px;"/>
                         </HBox>
                     </VBox>
                 </HBox>
 
+                <!-- DATUM EN TIJD (vereenvoudigd) -->
                 <VBox spacing="10">
-                    <Label text="Datum en tijd"
-                           style="-fx-font-size: 16px; -fx-font-weight: bold;" />
-
-                    <DatePicker fx:id="datePicker"
-                                prefWidth="295"
-                                prefHeight="65"
-                                style="-fx-font-size: 20px;" />
+                    <Label text="Datum en tijd" style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
+                    <DatePicker fx:id="datePicker" prefWidth="200"/>
                 </VBox>
 
+                <!-- ZOEK KNOP -->
                 <HBox alignment="CENTER">
-                    <Button text="&#x1F50D;  Zoek reis"
+                    <Button text="Zoek reis"
                             onAction="#searchTrip"
                             prefWidth="215"
                             prefHeight="55"
-                            style="-fx-font-size: 20px;
-                                   -fx-font-weight: bold;
-                                   -fx-background-color: white;
-                                   -fx-border-color: #777;" />
+                            style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-background-color: white; -fx-border-color: #777;"/>
                 </HBox>
 
-                <Label fx:id="messageLabel"
-                       style="-fx-text-fill: red;" />
+                <!-- RESULTAAT -->
+                <Label fx:id="messageLabel" text="" style="-fx-text-fill: red; -fx-wrap-text: true;"/>
             </VBox>
         </VBox>
     </center>
-
 </BorderPane>

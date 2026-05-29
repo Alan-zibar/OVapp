@@ -3,23 +3,26 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
 
-<VBox alignment="CENTER" spacing="15" xmlns:fx="http://javafx.com/fxml"
+<VBox alignment="CENTER" spacing="20" xmlns:fx="http://javafx.com/fxml"
       fx:controller="controller.RegisterController">
     <padding>
-        <Insets top="30" right="30" bottom="30" left="30"/>
+        <Insets top="40" right="40" bottom="40" left="40"/>
     </padding>
 
-    <Label text="Nieuw account aanmaken" style="-fx-font-size: 24px; -fx-font-weight: bold;"/>
+    <Text text="ToWhere" style="-fx-font-size: 36px; -fx-font-weight: bold;"/>
 
-    <TextField fx:id="fullNameField" promptText="Volledige naam" prefWidth="250"/>
-    <TextField fx:id="usernameField" promptText="Gebruikersnaam" prefWidth="250"/>
-    <PasswordField fx:id="passwordField" promptText="Wachtwoord" prefWidth="250"/>
-    <PasswordField fx:id="confirmPasswordField" promptText="Bevestig wachtwoord" prefWidth="250"/>
+    <Text text="Maak een nieuw account aan" style="-fx-font-size: 14px; -fx-fill: #555;"/>
 
-    <Button text="Registreer" onAction="#handleRegister" prefWidth="120"/>
+    <VBox spacing="15" prefWidth="300">
+        <TextField fx:id="fullNameField" promptText="Volledige naam" prefHeight="40"/>
+        <TextField fx:id="usernameField" promptText="Gebruikersnaam" prefHeight="40"/>
+        <PasswordField fx:id="passwordField" promptText="Wachtwoord" prefHeight="40"/>
+        <PasswordField fx:id="confirmPasswordField" promptText="Bevestig wachtwoord" prefHeight="40"/>
 
-    <Label fx:id="messageLabel" text="" style="-fx-text-fill: red;"/>
+        <Button text="Registreer" onAction="#handleRegister" prefWidth="300" prefHeight="40" style="-fx-background-color: #0078D7; -fx-text-fill: white; -fx-font-weight: bold;"/>
 
-    <Hyperlink text="Terug naar inloggen" onAction="#goToLogin"/>
+        <Hyperlink text="Terug naar inloggen" onAction="#goToLogin"/>
+    </VBox>
 </VBox>

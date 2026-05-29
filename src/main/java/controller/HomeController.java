@@ -1,41 +1,29 @@
 package controller;
-import Service.RouteService;
 
 import Service.NavigationService;
 import Service.TripService;
+import Service.RouteService;
+import model.Route;
+import model.TransportType;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.util.Duration;
-
-import model.Route;
-import model.TransportType;
 
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-
+import java.util.List;
 
 public class HomeController {
 
-    @FXML
-    private ComboBox<String> fromComboBox;
-
-    @FXML
-    private ComboBox<String> toComboBox;
-
-    @FXML
-    private DatePicker datePicker;
-
-    @FXML
-    private Label messageLabel;
-
-    @FXML
-    private Label currentTimeLabel;
+    @FXML private ComboBox<String> fromComboBox;
+    @FXML private ComboBox<String> toComboBox;
+    @FXML private DatePicker datePicker;
+    @FXML private Label messageLabel;
+    @FXML private Label currentTimeLabel;
 
     private final TripService tripService = new TripService();
     private final RouteService routeService = new RouteService();
@@ -44,14 +32,20 @@ public class HomeController {
 
     @FXML
     private void initialize() {
-        fromComboBox.getItems().addAll(tripService.getStations());
-        toComboBox.getItems().addAll(tripService.getStations());
+        List<String> stations = routeService.getAllStations();
+        fromComboBox.getItems().addAll(stations);
+        toComboBox.getItems().addAll(stations);
+
+        if (!stations.isEmpty()) {
+            fromComboBox.setValue(stations.get(0));
+            if (stations.size() > 1) toComboBox.setValue(stations.get(1));
+        }
+
         startClock();
     }
 
     private void startClock() {
         updateCurrentTime();
-
         clockTimeline = new Timeline(
                 new KeyFrame(Duration.seconds(1), event -> updateCurrentTime())
         );
@@ -67,21 +61,19 @@ public class HomeController {
     private void swapStations() {
         String from = fromComboBox.getValue();
         String to = toComboBox.getValue();
-
-        fromComboBox.setValue(to);
-        toComboBox.setValue(from);
+        if (from != null && to != null) {
+            fromComboBox.setValue(to);
+            toComboBox.setValue(from);
+        }
     }
-
 
     @FXML
     private void searchTrip(ActionEvent event) {
-        System.out.println("searchTip called");
         String from = fromComboBox.getValue();
         String to = toComboBox.getValue();
-        System.out.println("from=" + from + ", to=" + to);
 
         if (from == null || to == null) {
-            messageLabel.setText("Kies vertrek en aankomst.");
+            messageLabel.setText("Kies eerst vertrek en aankomst.");
             return;
         }
 
@@ -89,7 +81,7 @@ public class HomeController {
         Route route = routeService.findRoute(from, to, type);
 
         if (route == null) {
-            messageLabel.setText("Geen route gevonden.");
+            messageLabel.setText("Geen route gevonden tussen " + from + " en " + to);
             return;
         }
 
@@ -97,9 +89,9 @@ public class HomeController {
         messageLabel.setText(String.format("Route: %s → %s, %d min, %d km",
                 route.getFrom(), route.getTo(),
                 route.getDurationMinutes(), route.getDistanceKm()));
-
     }
 
+    // Navigatiemethoden
     @FXML
     private void goToHome(ActionEvent event) {
         NavigationService.switchScene(event, "home.fxml");
