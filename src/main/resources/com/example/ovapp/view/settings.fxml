@@ -30,7 +30,7 @@
 
         <VBox spacing="8">
             <Label fx:id="contrastLabel" text="Hoog contrast (kleurenweergave)" style="-fx-font-weight: bold;"/>
-            <Label text="Kies een weergave die het beste bij jou past:" style="-fx-font-size: 13px; -fx-text-fill: #555;"/>
+            <Label fx:id="chooseContrastLabel" text="Kies een weergave die het beste bij jou past:" style="-fx-font-size: 13px; -fx-text-fill: #555;"/>
             <VBox spacing="5" style="-fx-padding: 0 0 0 20;">
                 <RadioButton fx:id="contrastStandard" text="Standaard contrast" userData="Standaard"/>
                 <RadioButton fx:id="contrastBlackWhite" text="Hoog contrast (zwart / wit)" userData="Hoog contrast (zwart/wit)"/>
@@ -40,7 +40,7 @@
 
         <VBox spacing="8">
             <Label fx:id="colorBlindLabel" text="Kleurenblindheid filters" style="-fx-font-weight: bold;"/>
-            <Label text="Kies het type kleurenblindheid:" style="-fx-font-size: 13px; -fx-text-fill: #555;"/>
+            <Label fx:id="chooseColorBlindLabel" text="Kies het type kleurenblindheid:" style="-fx-font-size: 13px; -fx-text-fill: #555;"/>
             <VBox spacing="5" style="-fx-padding: 0 0 0 20;">
                 <RadioButton fx:id="filterNone" text="Geen filter" userData="Geen filter"/>
                 <RadioButton fx:id="filterProtan" text="Protanopie (roodblind)" userData="Protanopie (roodblind)"/>

@@ -17,7 +17,9 @@ public class SettingsController implements LanguageRefreshable {
     @FXML private Slider textSizeSlider;
     @FXML private Text previewText;
     @FXML private Label contrastLabel;
+    @FXML private Label chooseContrastLabel;
     @FXML private Label colorBlindLabel;
+    @FXML private Label chooseColorBlindLabel;
     @FXML private Label infoLabel;
     @FXML private Button resetButton;
 
@@ -239,10 +241,25 @@ public class SettingsController implements LanguageRefreshable {
         titleLabel.setText(LanguageService.text("Instellingen", "Settings"));
         textSizeLabel.setText(LanguageService.text("Tekstgrootte", "Text size"));
         contrastLabel.setText(LanguageService.text("Hoog contrast (kleurenweergave)", "High contrast (color display)"));
+        chooseContrastLabel.setText(LanguageService.text(
+                "Kies een weergave die het beste bij jou past:",
+                "Choose a display that suits you best:"));
         colorBlindLabel.setText(LanguageService.text("Kleurenblindheid filters", "Color blindness filters"));
+        chooseColorBlindLabel.setText(LanguageService.text(
+                "Kies het type kleurenblindheid:",
+                "Choose the type of color blindness:"));
         infoLabel.setText(LanguageService.text("De wijzigingen worden direct toegepast op de app.",
                 "Changes are applied to the app immediately."));
         resetButton.setText(LanguageService.text("Standaard instellingen herstellen", "Reset to default settings"));
+
+        contrastStandard.setText(LanguageService.text("Standaard contrast", "Standard contrast"));
+        contrastBlackWhite.setText(LanguageService.text("Hoog contrast (zwart / wit)", "High contrast (black / white)"));
+        contrastYellowBlack.setText(LanguageService.text("Hoog contrast (geel / zwart)", "High contrast (yellow / black)"));
+
+        filterNone.setText(LanguageService.text("Geen filter", "No filter"));
+        filterProtan.setText(LanguageService.text("Protanopie (roodblind)", "Protanopia (red-blind)"));
+        filterDeutan.setText(LanguageService.text("Deuteranopie (groenblind)", "Deuteranopia (green-blind)"));
+        filterTritan.setText(LanguageService.text("Tritanopie (blauwblind)", "Tritanopia (blue-blind)"));
     }
 
     public static void applyInitialSettings(Scene scene) {
