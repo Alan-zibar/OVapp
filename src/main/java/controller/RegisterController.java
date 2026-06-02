@@ -1,72 +1,132 @@
 package controller;
 
-import Service.NavigationService;
+import Service.LanguageService;
+import Service.SessionService;
+import Service.UserService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import java.util.ArrayList;
-import java.util.List;
 
-class User {
-    String fullName;
-    String username;
-    String password;
-    User(String fullName, String username, String password) {
-        this.fullName = fullName;
-        this.username = username;
-        this.password = password;
-    }
-}
+public class RegisterController implements LanguageRefreshable {
 
-public class RegisterController {
+    @FXML private Label registerTitleLabel;
+    @FXML private Label fullNameLabel;
+    @FXML private Label usernameLabel;
+    @FXML private Label emailLabel;
+    @FXML private Label passwordLabel;
+    @FXML private Label confirmPasswordLabel;
+    @FXML private Label messageLabel;
 
     @FXML private TextField fullNameField;
     @FXML private TextField usernameField;
+    @FXML private TextField emailField;
     @FXML private PasswordField passwordField;
     @FXML private PasswordField confirmPasswordField;
-    @FXML private Label messageLabel;
 
-    private static final List<User> users = new ArrayList<>();
+    @FXML private Button createAccountButton;
+    @FXML private Button backToLoginButton;
 
     @FXML
-    private void handleRegister(ActionEvent event) {
-        String fullName = fullNameField.getText().trim();
-        String username = usernameField.getText().trim();
-        String password = passwordField.getText();
-        String confirm = confirmPasswordField.getText();
+    private void initialize() {
+        refreshLanguage();
 
-        if (fullName.isEmpty() || username.isEmpty() || password.isEmpty()) {
-            messageLabel.setText("Alle velden zijn verplicht!");
-            return;
-        }
-        if (!password.equals(confirm)) {
-            messageLabel.setText("Wachtwoorden komen niet overeen");
-            return;
-        }
-        for (User u : users) {
-            if (u.username.equals(username)) {
-                messageLabel.setText("Deze gebruikersnaam bestaat al");
-                return;
-            }
-        }
-        users.add(new User(fullName, username, password));
-        messageLabel.setStyle("-fx-text-fill: green;");
-        messageLabel.setText("Account succesvol aangemaakt! Je kunt nu inloggen.");
-
-        new Thread(() -> {
-            try {
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            javafx.application.Platform.runLater(() -> goToLogin(event));
-        }).start();
+        backHomeButton.setText(LanguageService.text(
+                "←  Terug naar home",
+                "←  Back to home"
+        ));
+    }
+    @FXML
+    private void goBackToHome(ActionEvent event) {
+        MainLayoutController.loadPage("home.fxml");
     }
 
     @FXML
-    private void goToLogin(ActionEvent event) {
-        NavigationService.switchScene(event, "login.fxml");
+    private Button backHomeButton;
+
+    @Override
+    public void refreshLanguage() {
+        registerTitleLabel.setText(LanguageService.text("Account aanmaken", "Create account"));
+        fullNameLabel.setText(LanguageService.text("Volledige naam", "Full name"));
+        usernameLabel.setText(LanguageService.text("Gebruikersnaam", "Username"));
+        emailLabel.setText(LanguageService.text("E-mailadres", "Email address"));
+        passwordLabel.setText(LanguageService.text("Wachtwoord", "Password"));
+        confirmPasswordLabel.setText(LanguageService.text("Wachtwoord herhalen", "Repeat password"));
+
+        fullNameField.setPromptText(LanguageService.text("Voer je volledige naam in", "Enter your full name"));
+        usernameField.setPromptText(LanguageService.text("Kies een gebruikersnaam", "Choose a username"));
+        emailField.setPromptText(LanguageService.text("Voer je e-mailadres in", "Enter your email address"));
+        passwordField.setPromptText(LanguageService.text("Voer je wachtwoord in", "Enter your password"));
+        confirmPasswordField.setPromptText(LanguageService.text("Herhaal je wachtwoord", "Repeat your password"));
+
+        createAccountButton.setText(LanguageService.text("👥  Account aanmaken", "👥  Create account"));
+        backToLoginButton.setText(LanguageService.text("←  Terug naar inloggen", "←  Back to login"));
+
+        backToLoginButton.setText(LanguageService.text(
+                "←  Terug naar inloggen",
+                "←  Back to login"
+        ));
+
+        backHomeButton.setText(LanguageService.text(
+                "←  Terug naar home",
+                "←  Back to home"
+        ));
+
+
+    }
+
+    @FXML
+    private void handleRegister(ActionEvent event) {
+        String fullName = fullNameField.getText();
+        String username = usernameField.getText();
+        String email = emailField.getText();
+        String password = passwordField.getText();
+        String confirmPassword = confirmPasswordField.getText();
+
+        if (fullName.isBlank() || username.isBlank() || email.isBlank()
+                || password.isBlank() || confirmPassword.isBlank()) {
+            messageLabel.setText(LanguageService.text(
+                    "Vul alle velden in.",
+                    "Fill in all fields."
+            ));
+            return;
+        }
+
+        if (!email.contains("@")) {
+            messageLabel.setText(LanguageService.text(
+                    "Voer een geldig e-mailadres in.",
+                    "Enter a valid email address."
+            ));
+            return;
+        }
+
+        if (!password.equals(confirmPassword)) {
+            messageLabel.setText(LanguageService.text(
+                    "De wachtwoorden komen niet overeen.",
+                    "The passwords do not match."
+            ));
+            return;
+        }
+
+        if (UserService.usernameExists(username)) {
+            messageLabel.setText(LanguageService.text(
+                    "Deze gebruikersnaam bestaat al.",
+                    "This username already exists."
+            ));
+            return;
+        }
+
+        UserService.registerUser(fullName, username, email, password);
+
+        SessionService.login(username);
+        HeaderController.refreshHeader();
+        MainLayoutController.loadPage("home.fxml");
+    }
+
+    @FXML
+    private void goBackToLogin(ActionEvent event) {
+        MainLayoutController.loadPage("login.fxml");
     }
 }

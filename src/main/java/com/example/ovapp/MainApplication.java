@@ -9,12 +9,6 @@ import javafx.scene.image.Image;
 
 public class MainApplication extends Application {
 
-
-    @Override
-    public void start(Stage stage) throws Exception {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/ovapp/view/home.fxml"));
-        Scene scene = new Scene(loader.load(), 1100, 700);
-
     public static void main(String[] args) {
         launch(args);
     }
@@ -31,15 +25,11 @@ public class MainApplication extends Application {
 
 
         Scene scene = new Scene(fxmlLoader.load());
- main
+
         stage.setTitle("ToWhere");
         stage.setScene(scene);
         stage.show();
 
         SettingsController.applyInitialSettings(scene);
-    }
-
-    public static void main(String[] args) {
-        launch(args);
     }
 }
