@@ -72,13 +72,22 @@ public class HomeController implements LanguageRefreshable  {
 
     private void setupAutoComplete(ComboBox<String> comboBox) {
 
+        comboBox.setEditable(true);
+        comboBox.setItems(FXCollections.observableArrayList(allStations));
+
+        final boolean[] updating = {false};
+
         comboBox.getEditor().textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!comboBox.isShowing()) {
-                comboBox.show();
+            if (updating[0]) {
+                return;
             }
 
             if (newValue == null || newValue.isBlank()) {
+                updating[0] = true;
+                comboBox.getSelectionModel().clearSelection();
+                comboBox.setValue(null);
                 comboBox.setItems(FXCollections.observableArrayList(allStations));
+                updating[0] = false;
                 return;
             }
 
@@ -92,26 +101,64 @@ public class HomeController implements LanguageRefreshable  {
                 }
             }
 
+            updating[0] = true;
             comboBox.setItems(filteredStations);
-            comboBox.show();
+            comboBox.getEditor().setText(newValue);
+            comboBox.getEditor().positionCaret(newValue.length());
+            updating[0] = false;
+
+            if (!filteredStations.isEmpty() && comboBox.getScene() != null) {
+                comboBox.show();
+            }
         });
 
         comboBox.setOnAction(event -> {
+            if (updating[0]) {
+                return;
+            }
+
             String selectedStation = comboBox.getSelectionModel().getSelectedItem();
 
             if (selectedStation != null) {
+                updating[0] = true;
+                comboBox.setValue(selectedStation);
                 comboBox.getEditor().setText(selectedStation);
+                comboBox.getEditor().positionCaret(selectedStation.length());
+                updating[0] = false;
             }
         });
+
         comboBox.getEditor().setOnAction(event -> {
+            String text = comboBox.getEditor().getText();
+
+            if (text == null || text.isBlank()) {
+                updating[0] = true;
+                comboBox.getSelectionModel().clearSelection();
+                comboBox.setValue(null);
+                updating[0] = false;
+                return;
+            }
+
             if (!comboBox.getItems().isEmpty()) {
                 String firstMatch = comboBox.getItems().get(0);
+
+                updating[0] = true;
                 comboBox.setValue(firstMatch);
                 comboBox.getEditor().setText(firstMatch);
+                comboBox.getEditor().positionCaret(firstMatch.length());
+                updating[0] = false;
+
                 comboBox.hide();
             }
         });
     }
+
+
+
+
+
+
+
 
 
     private void setupTimeSpinners() {
@@ -207,6 +254,13 @@ public class HomeController implements LanguageRefreshable  {
         String from = fromComboBox.getEditor().getText();
         String to = toComboBox.getEditor().getText();
 
+        if (from != null) {
+            from = from.trim();
+        }
+
+        if (to != null) {
+            to = to.trim();
+        }
 
         int hour = hourSpinner.getValue();
         int minute = minuteSpinner.getValue();
@@ -216,11 +270,20 @@ public class HomeController implements LanguageRefreshable  {
                 ? ""
                 : datePicker.getValue().toString();
 
+        if (from == null || from.isBlank() || to == null || to.isBlank()) {
+            messageLabel.setText(getChooseStationsMessage());
+            return;
+        }
 
         if (!tripService.isValidTrip(from, to)) {
             messageLabel.setText(getChooseStationsMessage());
             return;
         }
+
+        fromComboBox.setValue(from);
+        toComboBox.setValue(to);
+
+        messageLabel.setText("");
 
         TripSearchState.saveSearch(from, to, selectedDate, selectedTime);
         MainLayoutController.loadPage("results.fxml");

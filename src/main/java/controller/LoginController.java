@@ -19,7 +19,7 @@ public class LoginController implements LanguageRefreshable {
     private PasswordField passwordField;
 
     @FXML
-    private TextField visiblePasswordField;    
+    private TextField visiblePasswordField;
 
     @FXML
     private Label messageLabel;
@@ -110,20 +110,20 @@ public class LoginController implements LanguageRefreshable {
     private void togglePasswordVisibility(ActionEvent event){
 
         if (passwordField.isVisible()) {
-        visiblePasswordField.setText(passwordField.getText());
-        passwordField.setVisible(false);
-        visiblePasswordField.setVisible(true);
-        
-        
+            visiblePasswordField.setText(passwordField.getText());
+            passwordField.setVisible(false);
+            visiblePasswordField.setVisible(true);
+
+
         }
 
         else {
-        passwordField.setText(visiblePasswordField.getText());
-        visiblePasswordField.setVisible(false);
-        passwordField.setVisible(true);
+            passwordField.setText(visiblePasswordField.getText());
+            visiblePasswordField.setVisible(false);
+            passwordField.setVisible(true);
         }
-        
-        }
+
+    }
 
 
 
@@ -145,18 +145,14 @@ public class LoginController implements LanguageRefreshable {
             SessionService.login(username);
             HeaderController.refreshHeader();
             MainLayoutController.loadPage("home.fxml");
-    } else {
+        } else {
             messageLabel.setStyle("-fx-text-fill: red; -fx-font-size: 14px;");
             messageLabel.setText(LanguageService.text(
                     "Gebruikersnaam of wachtwoord is onjuist.",
                     "Username or password is incorrect."
             ));
         }
-        if (UserService.login(usernameField.getText(), passwordField.getText())) {
-            controller.HistoryController.isLoggedIn = true;
-        }
     }
-
 
     @FXML
     private void goBackToHome(ActionEvent event) {

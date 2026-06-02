@@ -22,3 +22,50 @@
     -fx-border-insets: 0;
     -fx-padding: 2 4 2 4;
 }
+
+.top-header-button {
+    -fx-background-color: white;
+    -fx-border-color: #555555;
+    -fx-border-width: 1.2;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+    -fx-padding: 7 18;
+    -fx-font-size: 16px;
+    -fx-font-weight: normal;
+    -fx-text-fill: black;
+    -fx-cursor: hand;
+}
+
+.top-header-button:hover {
+    -fx-background-color: #f2f2f2;
+}
+
+.menu-button {
+    -fx-text-overrun: clip;
+}
+
+.menu-button .label {
+    -fx-text-overrun: clip;
+}
+
+.language-menu-button {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-padding: 0 2 0 2;
+    -fx-font-size: 20px;
+    -fx-font-weight: normal;
+    -fx-text-fill: black;
+    -fx-cursor: hand;
+    -fx-min-width: 64px;
+    -fx-pref-width: 64px;
+    -fx-max-width: 64px;
+}
+
+.language-menu-button .arrow-button {
+    -fx-padding: 0;
+}
+
+.language-menu-button .arrow {
+    -fx-padding: 0;
+    -fx-background-color: transparent;
+}

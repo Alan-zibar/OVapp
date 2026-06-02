@@ -1,13 +1,63 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Text?>
 
-<VBox xmlns:fx="http://javafx.com/fxml"
-      fx:controller="controller.SettingsController"
-      alignment="CENTER"
-      spacing="20">
+<ScrollPane fitToWidth="true"
+            xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="controller.SettingsController"
+            style="-fx-background-color: white; -fx-background: white;">
 
-    <Label text="Instellingen" style="-fx-font-size: 28px; -fx-font-weight: bold;" />
+    <VBox spacing="20" alignment="TOP_CENTER"
+          style="-fx-padding: 30 45 30 45;">
 
-</VBox>
+        <Label fx:id="titleLabel" text="Instellingen" style="-fx-font-size: 28px; -fx-font-weight: bold;"/>
+
+        <VBox spacing="8">
+            <Label fx:id="textSizeLabel" text="Tekstgrootte" style="-fx-font-weight: bold;"/>
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <Label text="A" style="-fx-font-size: 14px; -fx-font-weight: bold;"/>
+                <Slider fx:id="textSizeSlider" min="100" max="200" value="150"
+                        showTickLabels="true" showTickMarks="true" majorTickUnit="25" minorTickCount="4"
+                        blockIncrement="25" prefWidth="350"/>
+                <Label text="A" style="-fx-font-size: 24px; -fx-font-weight: bold;"/>
+            </HBox>
+            <Text fx:id="previewText" text="Voorbeeld: Dit is een voorbeeldtekst" style="-fx-font-size: 14px;"/>
+        </VBox>
+
+        <VBox spacing="8">
+            <Label fx:id="contrastLabel" text="Hoog contrast (kleurenweergave)" style="-fx-font-weight: bold;"/>
+            <Label fx:id="chooseContrastLabel" text="Kies een weergave die het beste bij jou past:" style="-fx-font-size: 13px; -fx-text-fill: #555;"/>
+            <VBox spacing="5" style="-fx-padding: 0 0 0 20;">
+                <RadioButton fx:id="contrastStandard" text="Standaard contrast" userData="Standaard"/>
+                <RadioButton fx:id="contrastBlackWhite" text="Hoog contrast (zwart / wit)" userData="Hoog contrast (zwart/wit)"/>
+                <RadioButton fx:id="contrastYellowBlack" text="Hoog contrast (geel / zwart)" userData="Hoog contrast (geel/zwart)"/>
+            </VBox>
+        </VBox>
+
+        <VBox spacing="8">
+            <Label fx:id="colorBlindLabel" text="Kleurenblindheid filters" style="-fx-font-weight: bold;"/>
+            <Label fx:id="chooseColorBlindLabel" text="Kies het type kleurenblindheid:" style="-fx-font-size: 13px; -fx-text-fill: #555;"/>
+            <VBox spacing="5" style="-fx-padding: 0 0 0 20;">
+                <RadioButton fx:id="filterNone" text="Geen filter" userData="Geen filter"/>
+                <RadioButton fx:id="filterProtan" text="Protanopie (roodblind)" userData="Protanopie (roodblind)"/>
+                <RadioButton fx:id="filterDeutan" text="Deuteranopie (groenblind)" userData="Deuteranopie (groenblind)"/>
+                <RadioButton fx:id="filterTritan" text="Tritanopie (blauwblind)" userData="Tritanopie (blauwblind)"/>
+            </VBox>
+        </VBox>
+
+        <Label fx:id="infoLabel" text="De wijzigingen worden direct toegepast op de app." style="-fx-font-size: 12px; -fx-text-fill: #555;"/>
+
+        <Region VBox.vgrow="ALWAYS"/>
+
+        <HBox alignment="CENTER">
+            <Button fx:id="resetButton" text="Standaard instellingen herstellen" onAction="#resetSettings"
+                    prefWidth="300" prefHeight="40"
+                    style="-fx-background-color: #d9534f; -fx-text-fill: white; -fx-font-weight: bold; -fx-border-radius: 5; -fx-background-radius: 5;"/>
+        </HBox>
+
+    </VBox>
+</ScrollPane>

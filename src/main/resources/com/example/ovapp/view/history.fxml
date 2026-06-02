@@ -13,7 +13,9 @@
       style="-fx-padding: 30; -fx-background-color: #f8f9fa;">
 
     <HBox alignment="CENTER_LEFT" spacing="20" style="-fx-fill-height: true;">
-        <Label text="Reishistorie" style="-fx-font-size: 26px; -fx-font-weight: bold; -fx-text-fill: #1a1a1a;" />
+        <Label fx:id="historyTitleLabel"
+               text="Reishistorie"
+               style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #1a1a1a;" />
 
         <Region HBox.hgrow="ALWAYS" />
 

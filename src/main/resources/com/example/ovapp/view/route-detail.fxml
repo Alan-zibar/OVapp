@@ -1,13 +1,287 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 
-<VBox xmlns:fx="http://javafx.com/fxml"
-      fx:controller="controller.RouteDetailController"
-      alignment="CENTER"
-      spacing="20">
+<ScrollPane fitToWidth="true"
+            hbarPolicy="NEVER"
+            vbarPolicy="AS_NEEDED"
+            style="-fx-background-color: white; -fx-background: white;"
+            xmlns="http://javafx.com/javafx/17.0.12"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="controller.RouteDetailController">
 
-    <Label text="Route detail" style="-fx-font-size: 28px; -fx-font-weight: bold;" />
+    <content>
+        <VBox alignment="TOP_CENTER"
+              fillWidth="false"
+              spacing="16"
+              style="-fx-padding: 10 28 28 28; -fx-background-color: white;">
 
-</VBox>
+            <HBox alignment="CENTER_LEFT"
+                  prefWidth="880"
+                  maxWidth="880">
+
+                <Button fx:id="backButton"
+                        onAction="#goBackToResults"
+                        prefHeight="38"
+                        prefWidth="205"
+                        style="-fx-background-color: white;
+                               -fx-border-color: #777;
+                               -fx-border-width: 1.5;
+                               -fx-font-size: 14px;
+                               -fx-font-weight: bold;" />
+
+                <Region HBox.hgrow="ALWAYS" />
+
+                <Button fx:id="favoriteButton"
+                        onAction="#addToFavorites"
+                        prefHeight="38"
+                        prefWidth="205"
+                        style="-fx-background-color: white;
+                               -fx-border-color: #777;
+                               -fx-border-width: 1.5;
+                               -fx-font-size: 14px;
+                               -fx-font-weight: bold;" />
+            </HBox>
+
+            <VBox prefWidth="880"
+                  maxWidth="880"
+                  style="-fx-border-color: #777;
+                         -fx-border-width: 1.5;
+                         -fx-background-color: white;">
+
+                <HBox alignment="CENTER_LEFT"
+                      spacing="12"
+                      style="-fx-border-color: transparent transparent #777 transparent;
+                             -fx-border-width: 0 0 1.5 0;
+                             -fx-padding: 14 12 14 12;
+                             -fx-background-color: white;">
+
+                    <Label fx:id="transportIconLabel"
+                           alignment="CENTER"
+                           minWidth="58"
+                           prefWidth="58"
+                           maxWidth="58"
+                           style="-fx-font-size: 34px;" />
+
+                    <VBox prefWidth="300"
+                          minWidth="300"
+                          maxWidth="300"
+                          spacing="6">
+                        <Label fx:id="timeRangeLabel"
+                               style="-fx-font-size: 22px; -fx-font-weight: bold;" />
+
+                        <Label fx:id="routeNameLabel"
+                               style="-fx-font-size: 15px;"
+                               wrapText="true" />
+
+                        <Label fx:id="transportInfoLabel"
+                               style="-fx-font-size: 15px;"
+                               wrapText="true" />
+                    </VBox>
+
+                    <Separator orientation="VERTICAL"
+                               prefHeight="74" />
+
+
+
+                    <VBox alignment="CENTER_LEFT"
+                          prefWidth="280"
+                          minWidth="280"
+                          maxWidth="280"
+                          spacing="0"
+                          style="-fx-border-color: #cccccc;
+             -fx-border-width: 1;
+             -fx-background-color: white;">
+
+                        <HBox spacing="0">
+                            <Label fx:id="dateOnlyLabel"
+                                   prefWidth="200"
+                                   style="-fx-font-size: 16px;
+                      -fx-padding: 7 8 7 8;"
+                                   wrapText="true" />
+
+                            <Separator orientation="VERTICAL"
+                                       prefHeight="34" />
+
+                            <Label fx:id="timeOnlyLabel"
+                                   prefWidth="75"
+                                   alignment="CENTER"
+                                   style="-fx-font-size: 16px;
+                      -fx-padding: 7 8 7 8;" />
+                        </HBox>
+
+                        <Separator prefWidth="280" />
+
+                        <Label fx:id="plannedArrivalLabel"
+                               prefWidth="280"
+                               style="-fx-font-size: 17px;
+                  -fx-padding: 7 10 7 10;"
+                               wrapText="true" />
+                    </VBox>
+
+
+
+                    <Separator orientation="VERTICAL"
+                               prefHeight="74" />
+
+                    <VBox alignment="CENTER_LEFT"
+                          prefWidth="170"
+                          minWidth="170"
+                          maxWidth="170"
+                          spacing="7">
+                        <Label fx:id="statusLabel"
+                               style="-fx-font-size: 16px; -fx-font-weight: bold;"
+                               wrapText="true" />
+
+                        <Label fx:id="expectedArrivalLabel"
+                               style="-fx-font-size: 16px;"
+                               wrapText="true" />
+                    </VBox>
+                </HBox>
+
+                <HBox alignment="CENTER_LEFT"
+                      style="-fx-border-color: transparent transparent #cccccc transparent;
+                             -fx-border-width: 0 0 1 0;
+                             -fx-padding: 14 20 14 20;">
+
+                    <Label fx:id="routeOverviewTitleLabel"
+                           style="-fx-font-size: 18px; -fx-font-weight: bold;" />
+                </HBox>
+
+                <HBox alignment="TOP_LEFT"
+                      spacing="18"
+                      style="-fx-padding: 20 24 28 24;">
+
+                    <VBox fx:id="stopsContainer"
+                          spacing="0"
+                          prefWidth="570"
+                          minWidth="570"
+                          maxWidth="570" />
+
+                    <VBox alignment="TOP_RIGHT"
+                          prefWidth="210"
+                          minWidth="210"
+                          maxWidth="210"
+                          style="-fx-padding: 0;">
+
+                        <Label fx:id="detailedTransportLabel"
+                               visible="false"
+                               managed="false" />
+
+                        <GridPane alignment="TOP_RIGHT"
+                                  hgap="8"
+                                  vgap="18">
+
+                            <Label text="◷"
+                                   GridPane.rowIndex="0"
+                                   GridPane.columnIndex="0"
+                                   minWidth="34"
+                                   prefWidth="34"
+                                   maxWidth="34"
+                                   minHeight="34"
+                                   prefHeight="34"
+                                   maxHeight="34"
+                                   alignment="CENTER"
+                                   style="-fx-font-size: 28px;" />
+
+                            <Label fx:id="durationValueLabel"
+                                   GridPane.rowIndex="0"
+                                   GridPane.columnIndex="1"
+                                   minWidth="65"
+                                   prefWidth="65"
+                                   alignment="CENTER_LEFT"
+                                   style="-fx-font-size: 18px; -fx-font-weight: bold;" />
+
+                            <Label fx:id="durationTitleLabel"
+                                   GridPane.rowIndex="0"
+                                   GridPane.columnIndex="2"
+                                   minWidth="120"
+                                   prefWidth="120"
+                                   alignment="CENTER_LEFT"
+                                   style="-fx-font-size: 18px;" />
+
+                            <StackPane GridPane.rowIndex="1"
+                                       GridPane.columnIndex="0"
+                                       minWidth="34"
+                                       prefWidth="34"
+                                       maxWidth="34"
+                                       minHeight="34"
+                                       prefHeight="34"
+                                       maxHeight="34"
+                                       alignment="CENTER">
+
+                                <Label text="!"
+                                       minWidth="24"
+                                       prefWidth="24"
+                                       maxWidth="24"
+                                       minHeight="24"
+                                       prefHeight="24"
+                                       maxHeight="24"
+                                       alignment="CENTER"
+                                       style="-fx-border-color: #555;
+                                              -fx-border-radius: 20;
+                                              -fx-font-size: 16px;
+                                              -fx-font-weight: bold;" />
+                            </StackPane>
+
+                            <HBox GridPane.rowIndex="1"
+                                  GridPane.columnIndex="1"
+                                  GridPane.columnSpan="2"
+                                  alignment="CENTER_LEFT"
+                                  spacing="8">
+
+                                <Label fx:id="transfersValueLabel"
+                                       text="0"
+                                       style="-fx-font-size: 18px; -fx-font-weight: bold;" />
+
+                                <Label fx:id="transfersTitleLabel"
+                                       text="Overstappen"
+                                       style="-fx-font-size: 18px;" />
+                            </HBox>
+                        </GridPane>
+                    </VBox>
+                </HBox>
+            </VBox>
+
+            <HBox alignment="CENTER"
+                  prefWidth="880"
+                  maxWidth="880">
+                <HBox fx:id="favoriteMessageBox"
+                      alignment="CENTER"
+                      managed="false"
+                      visible="false"
+                      maxWidth="600"
+                      prefWidth="600"
+                      spacing="12"
+                      style="-fx-border-color: #999;
+                             -fx-border-width: 1.5;
+                             -fx-padding: 10 14 10 14;
+                             -fx-background-color: white;">
+
+                    <Label text="✓"
+                           style="-fx-font-size: 20px; -fx-font-weight: bold;" />
+
+                    <Label fx:id="favoriteMessageLabel"
+                           prefWidth="420"
+                           wrapText="true"
+                           style="-fx-font-size: 14px; -fx-font-weight: bold;" />
+
+                    <Button text="x"
+                            onAction="#closeFavoriteMessage"
+                            prefHeight="28"
+                            prefWidth="28"
+                            style="-fx-background-color: white;
+                                   -fx-border-color: transparent;
+                                   -fx-font-size: 18px;" />
+                </HBox>
+            </HBox>
+
+            <VBox managed="false" visible="false">
+                <Label fx:id="distanceValueLabel" />
+                <Label fx:id="distanceTitleLabel" />
+                <Button fx:id="travelDataButton" />
+            </VBox>
+        </VBox>
+    </content>
+</ScrollPane>

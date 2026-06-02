@@ -32,12 +32,15 @@
     </HBox>
 
     <Region prefWidth="5"/>
+    <HBox alignment="CENTER" spacing="-0">
+        <Label text="🌐" style="-fx-font-size: 22px;" />
 
-    <HBox alignment="CENTER" spacing="-6">
-        <Label text="🌐" style="-fx-font-size: 28px;" />
         <MenuButton fx:id="languageMenuButton"
                     text="NL"
-                    style="-fx-background-color: transparent; -fx-font-size: 16px; -fx-padding: 0;">
+                    minWidth="74" prefWidth="74" maxWidth="74"
+                    style="-fx-background-color: transparent;
+                       -fx-font-size: 20px;
+                       -fx-padding: 0 0 0 2;">
             <items>
                 <MenuItem text="Nederlands" onAction="#setDutchLanguage" />
                 <MenuItem text="English" onAction="#setEnglishLanguage" />
@@ -51,24 +54,28 @@
         <Button fx:id="loginTopButton"
                 text="Inloggen"
                 onAction="#goToLogin"
-                prefWidth="145"
-                prefHeight="42"
-                style="-fx-background-color: white; -fx-border-color: #555; -fx-border-width: 1.5; -fx-font-size: 16px;">
+                minWidth="150"
+                prefWidth="150"
+                minHeight="44"
+                prefHeight="44"
+                styleClass="top-header-button">
             <graphic>
-                <Label text="👤" style="-fx-font-size: 21px;" />
+                <Label text="👤" style="-fx-font-size: 20px;" />
             </graphic>
         </Button>
 
         <Button fx:id="logoutTopButton"
                 text="Uitloggen"
                 onAction="#handleLogout"
-                prefWidth="145"
-                prefHeight="42"
+                minWidth="160"
+                prefWidth="160"
+                minHeight="44"
+                prefHeight="44"
                 visible="false"
                 managed="false"
-                style="-fx-background-color: white; -fx-border-color: #555; -fx-border-width: 1.5; -fx-font-size: 16px;">
+                styleClass="top-header-button">
             <graphic>
-                <Label text="↪" style="-fx-font-size: 21px;" />
+                <Label text="↪" style="-fx-font-size: 20px;" />
             </graphic>
         </Button>
     </HBox>
