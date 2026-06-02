@@ -9,6 +9,7 @@ import javafx.scene.effect.ColorAdjust;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import java.util.prefs.Preferences;
+// veranderingen in textsize
 
 public class SettingsController implements LanguageRefreshable {
 
