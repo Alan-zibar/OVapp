@@ -1,7 +1,10 @@
 package controller;
 
 import Service.LanguageService;
+import Service.TripSearchState;
 import Service.TripService;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -11,13 +14,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.util.StringConverter;
-import Service.TripSearchState;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 
-
-
-public class HomeController implements LanguageRefreshable  {
+public class HomeController implements LanguageRefreshable {
 
     @FXML
     private DatePicker datePicker;
@@ -71,19 +69,15 @@ public class HomeController implements LanguageRefreshable  {
     }
 
     private void setupAutoComplete(ComboBox<String> comboBox) {
+        comboBox.setEditable(true);
 
         comboBox.getEditor().textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!comboBox.isShowing()) {
-                comboBox.show();
-            }
-
             if (newValue == null || newValue.isBlank()) {
                 comboBox.setItems(FXCollections.observableArrayList(allStations));
                 return;
             }
 
             String typedText = newValue.toLowerCase();
-
             ObservableList<String> filteredStations = FXCollections.observableArrayList();
 
             for (String station : allStations) {
@@ -93,7 +87,10 @@ public class HomeController implements LanguageRefreshable  {
             }
 
             comboBox.setItems(filteredStations);
-            comboBox.show();
+
+            if (!comboBox.isShowing()) {
+                comboBox.show();
+            }
         });
 
         comboBox.setOnAction(event -> {
@@ -103,6 +100,7 @@ public class HomeController implements LanguageRefreshable  {
                 comboBox.getEditor().setText(selectedStation);
             }
         });
+
         comboBox.getEditor().setOnAction(event -> {
             if (!comboBox.getItems().isEmpty()) {
                 String firstMatch = comboBox.getItems().get(0);
@@ -113,7 +111,6 @@ public class HomeController implements LanguageRefreshable  {
         });
     }
 
-
     private void setupTimeSpinners() {
         SpinnerValueFactory.IntegerSpinnerValueFactory hourFactory =
                 new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 23, 12);
@@ -121,12 +118,13 @@ public class HomeController implements LanguageRefreshable  {
         SpinnerValueFactory.IntegerSpinnerValueFactory minuteFactory =
                 new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 59, 0);
 
-        StringConverter<Integer> twoDigitConverter = new StringConverter<Integer>() {
+        StringConverter<Integer> twoDigitConverter = new StringConverter<>() {
             @Override
             public String toString(Integer value) {
                 if (value == null) {
                     return "00";
                 }
+
                 return String.format("%02d", value);
             }
 
@@ -163,10 +161,8 @@ public class HomeController implements LanguageRefreshable  {
     @Override
     public void refreshLanguage() {
         planTitleLabel.setText(LanguageService.text("Plan je reis", "Plan your trip"));
-
         fromTitleLabel.setText(LanguageService.text("Van", "From"));
         toTitleLabel.setText(LanguageService.text("Naar", "To"));
-
         dateTimeLabel.setText(LanguageService.text("Datum en tijd", "Date and time"));
 
         searchButton.setText(LanguageService.text("🔍  Zoek reis", "🔍  Search trip"));
@@ -187,42 +183,4 @@ public class HomeController implements LanguageRefreshable  {
     }
 
     private String getChooseStationsMessage() {
-        return LanguageService.text(
-                "Kies een vertrekstation en aankomststation.",
-                "Choose a departure station and arrival station."
-        );
-    }
-
-    @FXML
-    private void swapStations() {
-        String from = fromComboBox.getValue();
-        String to = toComboBox.getValue();
-
-        fromComboBox.setValue(to);
-        toComboBox.setValue(from);
-    }
-
-    @FXML
-    private void searchTrip(ActionEvent event) {
-        String from = fromComboBox.getEditor().getText();
-        String to = toComboBox.getEditor().getText();
-
-
-        int hour = hourSpinner.getValue();
-        int minute = minuteSpinner.getValue();
-        String selectedTime = String.format("%02d:%02d", hour, minute);
-
-        String selectedDate = datePicker.getValue() == null
-                ? ""
-                : datePicker.getValue().toString();
-
-
-        if (!tripService.isValidTrip(from, to)) {
-            messageLabel.setText(getChooseStationsMessage());
-            return;
-        }
-
-        TripSearchState.saveSearch(from, to, selectedDate, selectedTime);
-        MainLayoutController.loadPage("results.fxml");
-    }
-}
+        return Language
