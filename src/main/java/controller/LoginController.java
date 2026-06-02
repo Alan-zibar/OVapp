@@ -19,6 +19,9 @@ public class LoginController implements LanguageRefreshable {
     private PasswordField passwordField;
 
     @FXML
+    private TextField visiblePasswordField;    
+
+    @FXML
     private Label messageLabel;
 
     @FXML
@@ -103,6 +106,26 @@ public class LoginController implements LanguageRefreshable {
     }
 
 
+    @FXML
+    private void togglePasswordVisibility(ActionEvent event){
+
+        if (passwordField.isVisible()) {
+        visiblePasswordField.setText(passwordField.getText());
+        passwordField.setVisible(false);
+        visiblePasswordField.setVisible(true);
+        
+        
+        }
+
+        else {
+        passwordField.setText(visiblePasswordField.getText());
+        visiblePasswordField.setVisible(false);
+        passwordField.setVisible(true);
+        }
+        
+        }
+
+
 
     @FXML
     private void handleLogin(ActionEvent event) {
@@ -129,7 +152,11 @@ public class LoginController implements LanguageRefreshable {
                     "Username or password is incorrect."
             ));
         }
+        if (UserService.login(usernameField.getText(), passwordField.getText())) {
+            controller.HistoryController.isLoggedIn = true;
+        }
     }
+
 
     @FXML
     private void goBackToHome(ActionEvent event) {

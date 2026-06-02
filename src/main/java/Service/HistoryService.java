@@ -2,6 +2,8 @@ package Service;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class HistoryService {
     private static final HistoryService instance = new HistoryService();
@@ -14,14 +16,19 @@ public class HistoryService {
     }
 
     public void addEntry(String from, String to, String transportType) {
+        String typeText = transportType.equalsIgnoreCase("BUS") ? "Bus | Lijn" : "Trein | Intercity";
 
-        String icon = transportType.equalsIgnoreCase("BUS") ? "Bus" : "Trein";
-        String entry = String.format("%s %s ➔ %s", icon, from, to);
+        java.time.LocalDate today = java.time.LocalDate.now();
+        String dateText = String.format("%02d-%02d-%d", today.getDayOfMonth(), today.getMonthValue(), today.getYear());
 
+        String entry = from + "|" + to + "|" + typeText + "|" + dateText;
 
         if (historyList.isEmpty() || !historyList.get(0).equals(entry)) {
             historyList.add(0, entry);
         }
+    }
+    public void clearHistory() {
+        this.historyList.clear();
     }
 
     public ObservableList<String> getHistoryList() {

@@ -104,6 +104,10 @@ public class ResultsController implements LanguageRefreshable {
     }
 
     private void loadSearchSummary() {
+
+        String fromStation = TripSearchState.getFromStation();
+        String toStation = TripSearchState.getToStation();
+
         fromValueLabel.setText(valueOrDash(TripSearchState.getFromStation()));
         toValueLabel.setText(valueOrDash(TripSearchState.getToStation()));
 
@@ -115,6 +119,10 @@ public class ResultsController implements LanguageRefreshable {
         } else {
             dateTimeValueLabel.setText(valueOrDash(date) + " " + valueOrDash(time));
         }
+        if (fromStation != null && !fromStation.isBlank() && toStation != null && !toStation.isBlank()) {
+            Service.HistoryService.getInstance().addEntry(fromStation, toStation, selectedTransport);
+        }
+
     }
 
     private String valueOrDash(String value) {
@@ -317,12 +325,9 @@ public class ResultsController implements LanguageRefreshable {
 
         Button viewRouteButton = new Button(LanguageService.text("Bekijk route", "View route"));
         viewRouteButton.setOnAction(event -> viewRoute());
-        Service.HistoryService.getInstance().addEntry(from, to, selectedTransport);
-        viewRoute();
         viewRouteButton.setPrefWidth(130);
         viewRouteButton.setPrefHeight(40);
         viewRouteButton.setStyle("-fx-background-color: white; -fx-border-color: #777; -fx-font-size: 15px;");
-
 
         VBox rightInfo = new VBox(12, statusLabel, arrivalLabel, viewRouteButton);
         rightInfo.setStyle("-fx-border-color: transparent transparent transparent #cccccc; -fx-border-width: 0 0 0 1.5; -fx-padding: 0 0 0 25;");
