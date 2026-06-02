@@ -68,7 +68,6 @@ public class SidebarController {
     private void goToHistory(ActionEvent event) {
         MainLayoutController.loadPage("history.fxml");
     }
-
     @FXML
     private void goToSettings(ActionEvent event) {
         MainLayoutController.loadPage("settings.fxml");

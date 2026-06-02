@@ -1,8 +1,8 @@
 package controller;
 
-import Service.UserService;
 import Service.LanguageService;
 import Service.SessionService;
+import Service.UserService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -17,6 +17,9 @@ public class LoginController implements LanguageRefreshable {
 
     @FXML
     private PasswordField passwordField;
+
+    @FXML
+    private TextField visiblePasswordField;
 
     @FXML
     private Label messageLabel;
@@ -48,11 +51,11 @@ public class LoginController implements LanguageRefreshable {
     @FXML
     private void initialize() {
         refreshLanguage();
-    }
 
-    @FXML
-    private void goToRegister(ActionEvent event) {
-        MainLayoutController.loadPage("register.fxml");
+        if (visiblePasswordField != null) {
+            visiblePasswordField.setVisible(false);
+            visiblePasswordField.setManaged(false);
+        }
     }
 
     @Override
@@ -81,6 +84,13 @@ public class LoginController implements LanguageRefreshable {
                 "Enter your password"
         ));
 
+        if (visiblePasswordField != null) {
+            visiblePasswordField.setPromptText(LanguageService.text(
+                    "Voer je wachtwoord in",
+                    "Enter your password"
+            ));
+        }
+
         loginFormButton.setText(LanguageService.text("🔒  Inloggen", "🔒  Login"));
         orLabel.setText(LanguageService.text("of", "or"));
 
@@ -93,21 +103,45 @@ public class LoginController implements LanguageRefreshable {
                 "←  Terug naar home",
                 "←  Back to home"
         ));
+    }
 
-        if (messageLabel.getText() != null && !messageLabel.getText().isEmpty()) {
-            messageLabel.setText(LanguageService.text(
-                    "Gebruikersnaam of wachtwoord is onjuist.",
-                    "Username or password is incorrect."
-            ));
+    @FXML
+    private void togglePasswordVisibility(ActionEvent event) {
+        if (visiblePasswordField == null) {
+            return;
+        }
+
+        if (passwordField.isVisible()) {
+            visiblePasswordField.setText(passwordField.getText());
+
+            passwordField.setVisible(false);
+            passwordField.setManaged(false);
+
+            visiblePasswordField.setVisible(true);
+            visiblePasswordField.setManaged(true);
+        } else {
+            passwordField.setText(visiblePasswordField.getText());
+
+            visiblePasswordField.setVisible(false);
+            visiblePasswordField.setManaged(false);
+
+            passwordField.setVisible(true);
+            passwordField.setManaged(true);
         }
     }
 
+    private String getCurrentPassword() {
+        if (visiblePasswordField != null && visiblePasswordField.isVisible()) {
+            return visiblePasswordField.getText();
+        }
 
+        return passwordField.getText();
+    }
 
     @FXML
     private void handleLogin(ActionEvent event) {
         String username = usernameField.getText();
-        String password = passwordField.getText();
+        String password = getCurrentPassword();
 
         if (username == null || username.isBlank() || password == null || password.isBlank()) {
             messageLabel.setStyle("-fx-text-fill: red; -fx-font-size: 14px;");
@@ -122,13 +156,22 @@ public class LoginController implements LanguageRefreshable {
             SessionService.login(username);
             HeaderController.refreshHeader();
             MainLayoutController.loadPage("home.fxml");
-    } else {
+        } else {
             messageLabel.setStyle("-fx-text-fill: red; -fx-font-size: 14px;");
             messageLabel.setText(LanguageService.text(
                     "Gebruikersnaam of wachtwoord is onjuist.",
                     "Username or password is incorrect."
             ));
         }
+        if (UserService.login(usernameField.getText(), passwordField.getText())) {
+            controller.HistoryController.isLoggedIn = true;
+        }
+    }
+
+
+    @FXML
+    private void goToRegister(ActionEvent event) {
+        MainLayoutController.loadPage("register.fxml");
     }
 
     @FXML

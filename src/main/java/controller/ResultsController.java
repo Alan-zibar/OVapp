@@ -104,6 +104,10 @@ public class ResultsController implements LanguageRefreshable {
     }
 
     private void loadSearchSummary() {
+
+        String fromStation = TripSearchState.getFromStation();
+        String toStation = TripSearchState.getToStation();
+
         fromValueLabel.setText(valueOrDash(TripSearchState.getFromStation()));
         toValueLabel.setText(valueOrDash(TripSearchState.getToStation()));
 
@@ -115,6 +119,10 @@ public class ResultsController implements LanguageRefreshable {
         } else {
             dateTimeValueLabel.setText(valueOrDash(date) + " " + valueOrDash(time));
         }
+        if (fromStation != null && !fromStation.isBlank() && toStation != null && !toStation.isBlank()) {
+            Service.HistoryService.getInstance().addEntry(fromStation, toStation, selectedTransport);
+        }
+
     }
 
     private String valueOrDash(String value) {
