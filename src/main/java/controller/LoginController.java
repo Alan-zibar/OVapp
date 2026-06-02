@@ -152,11 +152,7 @@ public class LoginController implements LanguageRefreshable {
                     "Username or password is incorrect."
             ));
         }
-        if (UserService.login(usernameField.getText(), passwordField.getText())) {
-            controller.HistoryController.isLoggedIn = true;
-        }
     }
-
 
     @FXML
     private void goBackToHome(ActionEvent event) {
