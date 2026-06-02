@@ -2,60 +2,46 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Text?>
-<?import javafx.collections.FXCollections?>
 
-<VBox spacing="20" alignment="TOP_CENTER" xmlns:fx="http://javafx.com/fxml"
-      fx:controller="controller.SettingsController">
-    <padding>
-        <Insets top="30" right="30" bottom="30" left="30"/>
-    </padding>
+<VBox spacing="25" alignment="TOP_CENTER"
+      xmlns="http://javafx.com/javafx/21"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="controller.SettingsController"
+      style="-fx-background-color: white; -fx-padding: 30 45 30 45;">
 
-    <Label text="Instellingen" style="-fx-font-size: 28px; -fx-font-weight: bold;"/>
+    <Label fx:id="titleLabel" text="Instellingen" style="-fx-font-size: 28px; -fx-font-weight: bold;"/>
 
     <!-- Tekstgrootte -->
     <VBox spacing="10">
-        <Label text="Tekstgrootte" style="-fx-font-weight: bold;"/>
-        <HBox spacing="10" alignment="CENTER_LEFT">
+        <Label fx:id="textSizeLabel" text="Tekstgrootte" style="-fx-font-weight: bold;"/>
+        <HBox spacing="15" alignment="CENTER_LEFT">
             <Label text="100%"/>
-            <Slider fx:id="textSizeSlider" min="100" max="200" value="100" showTickLabels="true" showTickMarks="true" majorTickUnit="25" minorTickCount="1" blockIncrement="25" prefWidth="300"/>
-            <Label fx:id="textSizeValue" text="100%"/>
+            <Slider fx:id="textSizeSlider" min="100" max="200" value="100" showTickLabels="true"
+                    showTickMarks="true" majorTickUnit="25" minorTickCount="1" blockIncrement="25"
+                    prefWidth="300"/>
+            <Label fx:id="textSizeValueLabel" text="100%"/>
         </HBox>
         <Text fx:id="previewText" text="Dit is een voorbeeldtekst" style="-fx-font-size: 14px;"/>
     </VBox>
 
     <!-- Contrast -->
     <VBox spacing="10">
-        <Label text="Contrast" style="-fx-font-weight: bold;"/>
-        <ComboBox fx:id="contrastCombo" promptText="Kies contrast">
-            <items>
-                <FXCollections fx:factory="observableArrayList">
-                    <String fx:value="Standaard"/>
-                    <String fx:value="Hoog contrast (zwart/wit)"/>
-                    <String fx:value="Hoog contrast (geel/zwart)"/>
-                </FXCollections>
-            </items>
-        </ComboBox>
+        <Label fx:id="contrastLabel" text="Contrast" style="-fx-font-weight: bold;"/>
+        <ComboBox fx:id="contrastCombo" promptText="Kies contrast" prefWidth="250"/>
     </VBox>
 
     <!-- Kleurenblindheid filter -->
     <VBox spacing="10">
-        <Label text="Kleurenblindheid filter" style="-fx-font-weight: bold;"/>
-        <ComboBox fx:id="colorBlindCombo" promptText="Kies filter">
-            <items>
-                <FXCollections fx:factory="observableArrayList">
-                    <String fx:value="Geen filter"/>
-                    <String fx:value="Protanopie (roodblind)"/>
-                    <String fx:value="Deuteranopie (groenblind)"/>
-                    <String fx:value="Tritanopie (blauwblind)"/>
-                </FXCollections>
-            </items>
-        </ComboBox>
+        <Label fx:id="colorBlindLabel" text="Kleurenblindheid filter" style="-fx-font-weight: bold;"/>
+        <ComboBox fx:id="colorBlindCombo" promptText="Kies filter" prefWidth="280"/>
     </VBox>
 
-    <Button text="Standaard instellingen herstellen" onAction="#resetSettings" prefWidth="250"/>
+    <Button fx:id="resetButton" text="Standaard instellingen herstellen" onAction="#resetSettings"
+            prefWidth="280" prefHeight="40" style="-fx-background-color: #f0f0f0; -fx-border-color: #ccc;"/>
 
-    <Button text="Terug" onAction="#goBack" prefWidth="100"/>
+    <Button fx:id="backButton" text="Terug" onAction="#goBack" prefWidth="120"
+            style="-fx-background-color: transparent; -fx-font-size: 14px;"/>
+
 </VBox>
