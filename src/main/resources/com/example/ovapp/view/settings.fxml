@@ -1,47 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.Text?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.VBox?>
 
-<VBox spacing="25" alignment="TOP_CENTER"
-      xmlns="http://javafx.com/javafx/21"
-      xmlns:fx="http://javafx.com/fxml/1"
+<VBox xmlns:fx="http://javafx.com/fxml"
       fx:controller="controller.SettingsController"
-      style="-fx-background-color: white; -fx-padding: 30 45 30 45;">
+      alignment="CENTER"
+      spacing="20">
 
-    <Label fx:id="titleLabel" text="Instellingen" style="-fx-font-size: 28px; -fx-font-weight: bold;"/>
-
-    <!-- Tekstgrootte -->
-    <VBox spacing="10">
-        <Label fx:id="textSizeLabel" text="Tekstgrootte" style="-fx-font-weight: bold;"/>
-        <HBox spacing="15" alignment="CENTER_LEFT">
-            <Label text="100%"/>
-            <Slider fx:id="textSizeSlider" min="100" max="200" value="100" showTickLabels="true"
-                    showTickMarks="true" majorTickUnit="25" minorTickCount="1" blockIncrement="25"
-                    prefWidth="300"/>
-            <Label fx:id="textSizeValueLabel" text="100%"/>
-        </HBox>
-        <Text fx:id="previewText" text="Dit is een voorbeeldtekst" style="-fx-font-size: 14px;"/>
-    </VBox>
-
-    <!-- Contrast -->
-    <VBox spacing="10">
-        <Label fx:id="contrastLabel" text="Contrast" style="-fx-font-weight: bold;"/>
-        <ComboBox fx:id="contrastCombo" promptText="Kies contrast" prefWidth="250"/>
-    </VBox>
-
-    <!-- Kleurenblindheid filter -->
-    <VBox spacing="10">
-        <Label fx:id="colorBlindLabel" text="Kleurenblindheid filter" style="-fx-font-weight: bold;"/>
-        <ComboBox fx:id="colorBlindCombo" promptText="Kies filter" prefWidth="280"/>
-    </VBox>
-
-    <Button fx:id="resetButton" text="Standaard instellingen herstellen" onAction="#resetSettings"
-            prefWidth="280" prefHeight="40" style="-fx-background-color: #f0f0f0; -fx-border-color: #ccc;"/>
-
-    <Button fx:id="backButton" text="Terug" onAction="#goBack" prefWidth="120"
-            style="-fx-background-color: transparent; -fx-font-size: 14px;"/>
+    <Label text="Instellingen" style="-fx-font-size: 28px; -fx-font-weight: bold;" />
 
 </VBox>

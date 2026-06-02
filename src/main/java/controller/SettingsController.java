@@ -72,3 +72,5 @@ public class SettingsController implements LanguageRefreshable {
 
             SettingsService.setTextSize(value);
            
+public class SettingsController {
+}
