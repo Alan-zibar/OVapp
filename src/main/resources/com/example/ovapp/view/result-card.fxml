@@ -30,12 +30,14 @@
         <Region HBox.hgrow="ALWAYS" />
 
         <VBox spacing="12"
-              prefWidth="210"
+              prefWidth="245"
               styleClass="result-card-side">
 
             <HBox alignment="CENTER_LEFT"
                   spacing="8">
                 <Label fx:id="statusLabel"
+                       minWidth="170"
+                       prefWidth="170"
                        styleClass="result-card-status" />
                 <Region HBox.hgrow="ALWAYS" />
                 <Button fx:id="favoriteButton"
