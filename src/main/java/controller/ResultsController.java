@@ -4,19 +4,23 @@ import Service.LanguageService;
 import Service.TripSearchState;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ToggleButton;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
-import java.util.ArrayList;
-import java.util.List;
+import model.Trip;
+import model.Trip.TripStop;
+
+import java.io.IOException;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-
+import java.util.ArrayList;
+import java.util.List;
 
 public class ResultsController implements LanguageRefreshable {
+
+    private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("HH:mm");
 
     @FXML
     private Label resultsTitleLabel;
@@ -47,44 +51,37 @@ public class ResultsController implements LanguageRefreshable {
     @FXML
     private Button loadMoreButton;
 
-    private final List<HBox> trainResultCards = new ArrayList<>();
-    private final List<HBox> busResultCards = new ArrayList<>();
-    private String selectedTransport = "TRAIN";
+    private final List<Trip> trainTrips = new ArrayList<>();
+    private final List<Trip> busTrips = new ArrayList<>();
+    private final List<Trip> mixedTrips = new ArrayList<>();
+    private String selectedTransport = "ALL";
     private int visibleResults = 2;
-
-
 
     @FXML
     private void initialize() {
-        refreshLanguage();
-        loadSearchSummary();
-        createHardcodedResults();
         setupTransportButtons();
-        renderResults();
+        loadSearchSummary();
+        refreshLanguage();
     }
 
-
     private void setupTransportButtons() {
-        trainToggleButton.setSelected(true);
+        trainToggleButton.setSelected(false);
         busToggleButton.setSelected(false);
 
         trainToggleButton.setOnAction(event -> {
-            selectedTransport = "TRAIN";
-            trainToggleButton.setSelected(true);
+            selectedTransport = trainToggleButton.isSelected() ? "TRAIN" : "ALL";
             busToggleButton.setSelected(false);
             visibleResults = 2;
             renderResults();
         });
 
         busToggleButton.setOnAction(event -> {
-            selectedTransport = "BUS";
+            selectedTransport = busToggleButton.isSelected() ? "BUS" : "ALL";
             trainToggleButton.setSelected(false);
-            busToggleButton.setSelected(true);
             visibleResults = 2;
             renderResults();
         });
     }
-
 
     @Override
     public void refreshLanguage() {
@@ -94,22 +91,21 @@ public class ResultsController implements LanguageRefreshable {
         dateTimeLabel.setText(LanguageService.text("Datum en tijd:", "Date and time:"));
         changeSearchButton.setText(LanguageService.text("Wijzigen", "Change"));
         transportTitleLabel.setText(LanguageService.text("Kies een reismiddel", "Choose transport"));
-        trainToggleButton.setText(LanguageService.text("🚆  Trein", "🚆  Train"));
-        busToggleButton.setText(LanguageService.text("🚌  Bus", "🚌  Bus"));
+        trainToggleButton.setText(LanguageService.text("\uD83D\uDE86  Trein", "\uD83D\uDE86  Train"));
+        busToggleButton.setText(LanguageService.text("\uD83D\uDE8C  Bus", "\uD83D\uDE8C  Bus"));
         optionsTitleLabel.setText(LanguageService.text("Kies een reisoptie", "Choose a trip option"));
-        loadMoreButton.setText(LanguageService.text("Meer resultaten laden⌄", "Load more results⌄"));
+        loadMoreButton.setText(LanguageService.text("Meer resultaten laden\u2304", "Load more results\u2304"));
 
-        createHardcodedResults();
+        createHardcodedTrips();
         renderResults();
     }
 
     private void loadSearchSummary() {
-
         String fromStation = TripSearchState.getFromStation();
         String toStation = TripSearchState.getToStation();
 
-        fromValueLabel.setText(valueOrDash(TripSearchState.getFromStation()));
-        toValueLabel.setText(valueOrDash(TripSearchState.getToStation()));
+        fromValueLabel.setText(valueOrDash(fromStation));
+        toValueLabel.setText(valueOrDash(toStation));
 
         String date = TripSearchState.getSelectedDate();
         String time = TripSearchState.getSelectedTime();
@@ -119,157 +115,118 @@ public class ResultsController implements LanguageRefreshable {
         } else {
             dateTimeValueLabel.setText(valueOrDash(date) + " " + valueOrDash(time));
         }
+
         if (fromStation != null && !fromStation.isBlank() && toStation != null && !toStation.isBlank()) {
             Service.HistoryService.getInstance().addEntry(fromStation, toStation, selectedTransport);
         }
-
     }
 
-    private String valueOrDash(String value) {
-        if (value == null || value.isBlank()) {
-            return "-";
-        }
-
-        return value;
-    }
-
-    private void createHardcodedResults() {
-        trainResultCards.clear();
-        busResultCards.clear();
+    private void createHardcodedTrips() {
+        trainTrips.clear();
+        busTrips.clear();
+        mixedTrips.clear();
 
         String from = valueOrDash(TripSearchState.getFromStation());
         String to = valueOrDash(TripSearchState.getToStation());
-
         LocalTime selectedTime = parseSelectedTime();
         int duration = calculateFakeDuration(from, to);
 
-        String trainDeparture1 = formatTime(selectedTime);
-        String trainArrival1 = formatTime(selectedTime.plusMinutes(duration));
+        trainTrips.add(createTrip(selectedTime, duration, 0, 10, from, to,
+                "TRAIN", "Intercity", "Spoor 7", "Spoor 12"));
+        trainTrips.add(createTrip(selectedTime, duration, 25, 0, from, to,
+                "TRAIN", "Sprinter", "Spoor 3", "Spoor 12"));
+        trainTrips.add(createTrip(selectedTime, duration, 45, 0, from, to,
+                "TRAIN", "Intercity direct", "Spoor 5", "Spoor 12"));
+        trainTrips.add(createTrip(selectedTime, duration, 70, 5, from, to,
+                "TRAIN", "Sprinter", "Spoor 2", "Spoor 12"));
 
-        String trainDeparture2 = formatTime(selectedTime.plusMinutes(25));
-        String trainArrival2 = formatTime(selectedTime.plusMinutes(duration + 25));
+        busTrips.add(createTrip(selectedTime, duration + 10, 10, 0, from, to,
+                "BUS", "Lijn 202", "Bushalte B2", "Bushalte"));
+        busTrips.add(createTrip(selectedTime, duration + 15, 30, 5, from, to,
+                "BUS", "Lijn 382", "Bushalte C1", "Bushalte"));
+        busTrips.add(createTrip(selectedTime, duration + 15, 55, 0, from, to,
+                "BUS", "Lijn 70", "Bushalte A4", "Bushalte"));
+        busTrips.add(createTrip(selectedTime, duration + 15, 80, 15, from, to,
+                "BUS", "Lijn 56", "Bushalte D3", "Bushalte"));
 
-        String trainDeparture3 = formatTime(selectedTime.plusMinutes(45));
-        String trainArrival3 = formatTime(selectedTime.plusMinutes(duration + 45));
+        for (int index = 0; index < trainTrips.size(); index++) {
+            mixedTrips.add(trainTrips.get(index));
+            mixedTrips.add(busTrips.get(index));
+        }
+    }
 
-        String trainDeparture4 = formatTime(selectedTime.plusMinutes(70));
-        String trainArrival4 = formatTime(selectedTime.plusMinutes(duration + 70));
+    private Trip createTrip(LocalTime baseTime,
+                            int durationMinutes,
+                            int departureOffset,
+                            int delayMinutes,
+                            String from,
+                            String to,
+                            String transportMode,
+                            String transportType,
+                            String departureLocation,
+                            String arrivalLocation) {
+        LocalTime departure = baseTime.plusMinutes(departureOffset);
+        LocalTime scheduledArrival = departure.plusMinutes(durationMinutes);
+        LocalTime expectedArrival = scheduledArrival.plusMinutes(delayMinutes);
+        LocalTime intermediate = departure.plusMinutes(durationMinutes / 2);
 
-        String busDeparture1 = formatTime(selectedTime.plusMinutes(10));
-        String busArrival1 = formatTime(selectedTime.plusMinutes(duration + 20));
-
-        String busDeparture2 = formatTime(selectedTime.plusMinutes(30));
-        String busArrival2 = formatTime(selectedTime.plusMinutes(duration + 45));
-
-        String busDeparture3 = formatTime(selectedTime.plusMinutes(55));
-        String busArrival3 = formatTime(selectedTime.plusMinutes(duration + 70));
-
-        String busDeparture4 = formatTime(selectedTime.plusMinutes(80));
-        String busArrival4 = formatTime(selectedTime.plusMinutes(duration + 95));
-
-        trainResultCards.add(createResultCard(
-                trainDeparture1,
-                trainArrival1,
+        return new Trip(
+                formatTime(departure),
+                formatTime(scheduledArrival),
+                formatTime(expectedArrival),
                 from,
                 to,
-                LanguageService.text("Trein | Intercity | Spoor 7", "Train | Intercity | Platform 7"),
-                LanguageService.text("+10 min vertraging", "+10 min delay"),
-                LanguageService.text(
-                        "Verwachte aankomst: " + formatTime(selectedTime.plusMinutes(duration + 10)),
-                        "Expected arrival: " + formatTime(selectedTime.plusMinutes(duration + 10))
+                transportMode,
+                transportType,
+                departureLocation,
+                arrivalLocation,
+                delayMinutes,
+                durationMinutes,
+                durationMinutes,
+                0,
+                List.of(
+                        new TripStop(formatTime(departure), from, "DEPARTURE", departureLocation),
+                        new TripStop(formatTime(intermediate), LanguageService.text("Tussenstation", "Intermediate stop"),
+                                "INTERMEDIATE", ""),
+                        new TripStop(formatTime(expectedArrival), to, "ARRIVAL", arrivalLocation)
                 )
-        ));
+        );
+    }
 
-        trainResultCards.add(createResultCard(
-                trainDeparture2,
-                trainArrival2,
-                from,
-                to,
-                LanguageService.text("Trein | Sprinter | Spoor 3", "Train | Sprinter | Platform 3"),
-                LanguageService.text("Op tijd", "On time"),
-                LanguageService.text(
-                        "Verwachte aankomst: " + trainArrival2,
-                        "Expected arrival: " + trainArrival2
-                )
-        ));
+    private void renderResults() {
+        resultsContainer.getChildren().clear();
+        List<Trip> selectedTrips = selectedTrips();
+        int max = Math.min(visibleResults, selectedTrips.size());
 
-        trainResultCards.add(createResultCard(
-                trainDeparture3,
-                trainArrival3,
-                from,
-                to,
-                LanguageService.text("Trein | Intercity direct | Spoor 5", "Train | Intercity direct | Platform 5"),
-                LanguageService.text("Op tijd", "On time"),
-                LanguageService.text(
-                        "Verwachte aankomst: " + trainArrival3,
-                        "Expected arrival: " + trainArrival3
-                )
-        ));
+        for (int index = 0; index < max; index++) {
+            resultsContainer.getChildren().add(loadResultCard(selectedTrips.get(index)));
+        }
 
-        trainResultCards.add(createResultCard(
-                trainDeparture4,
-                trainArrival4,
-                from,
-                to,
-                LanguageService.text("Trein | Sprinter | Spoor 2", "Train | Sprinter | Platform 2"),
-                LanguageService.text("+5 min vertraging", "+5 min delay"),
-                LanguageService.text(
-                        "Verwachte aankomst: " + formatTime(selectedTime.plusMinutes(duration + 75)),
-                        "Expected arrival: " + formatTime(selectedTime.plusMinutes(duration + 75))
-                )
-        ));
+        boolean hasMoreResults = visibleResults < selectedTrips.size();
+        loadMoreButton.setVisible(hasMoreResults);
+        loadMoreButton.setManaged(hasMoreResults);
+    }
 
-        busResultCards.add(createResultCard(
-                busDeparture1,
-                busArrival1,
-                from,
-                to,
-                LanguageService.text("Bus | Lijn 202 | Bushalte B2", "Bus | Line 202 | Bus stop B2"),
-                LanguageService.text("Op tijd", "On time"),
-                LanguageService.text(
-                        "Verwachte aankomst: " + busArrival1,
-                        "Expected arrival: " + busArrival1
-                )
-        ));
+    private List<Trip> selectedTrips() {
+        return switch (selectedTransport) {
+            case "BUS" -> busTrips;
+            case "TRAIN" -> trainTrips;
+            default -> mixedTrips;
+        };
+    }
 
-        busResultCards.add(createResultCard(
-                busDeparture2,
-                busArrival2,
-                from,
-                to,
-                LanguageService.text("Bus | Lijn 382 | Bushalte C1", "Bus | Line 382 | Bus stop C1"),
-                LanguageService.text("+5 min vertraging", "+5 min delay"),
-                LanguageService.text(
-                        "Verwachte aankomst: " + formatTime(selectedTime.plusMinutes(duration + 50)),
-                        "Expected arrival: " + formatTime(selectedTime.plusMinutes(duration + 50))
-                )
-        ));
-
-        busResultCards.add(createResultCard(
-                busDeparture3,
-                busArrival3,
-                from,
-                to,
-                LanguageService.text("Bus | Lijn 70 | Bushalte A4", "Bus | Line 70 | Bus stop A4"),
-                LanguageService.text("Op tijd", "On time"),
-                LanguageService.text(
-                        "Verwachte aankomst: " + busArrival3,
-                        "Expected arrival: " + busArrival3
-                )
-        ));
-
-        busResultCards.add(createResultCard(
-                busDeparture4,
-                busArrival4,
-                from,
-                to,
-                LanguageService.text("Bus | Lijn 56 | Bushalte D3", "Bus | Line 56 | Bus stop D3"),
-                LanguageService.text("+15 min vertraging", "+15 min delay"),
-                LanguageService.text(
-                        "Verwachte aankomst: " + formatTime(selectedTime.plusMinutes(duration + 110)),
-                        "Expected arrival: " + formatTime(selectedTime.plusMinutes(duration + 110))
-                )
-        ));
+    private VBox loadResultCard(Trip trip) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(
+                    "/com/example/ovapp/view/result-card.fxml"
+            ));
+            VBox card = loader.load();
+            ResultCardController controller = loader.getController();
+            controller.setTrip(trip);
+            return card;
+        } catch (IOException exception) {
+            throw new IllegalStateException("Resultaatkaart kon niet worden geladen", exception);
+        }
     }
 
     private LocalTime parseSelectedTime() {
@@ -279,11 +236,11 @@ public class ResultsController implements LanguageRefreshable {
             return LocalTime.of(10, 0);
         }
 
-        return LocalTime.parse(time, DateTimeFormatter.ofPattern("HH:mm"));
+        return LocalTime.parse(time, TIME_FORMATTER);
     }
 
     private String formatTime(LocalTime time) {
-        return time.format(DateTimeFormatter.ofPattern("HH:mm"));
+        return time.format(TIME_FORMATTER);
     }
 
     private int calculateFakeDuration(String from, String to) {
@@ -291,74 +248,8 @@ public class ResultsController implements LanguageRefreshable {
         return 30 + (hash % 35);
     }
 
-
-    private HBox createResultCard(String departureTime,
-                                  String arrivalTime,
-                                  String from,
-                                  String to,
-                                  String transportInfo,
-                                  String status,
-                                  String expectedArrival) {
-
-        Label iconLabel = new Label(transportInfo.contains("Bus") ? "🚌" : "🚆");
-        iconLabel.setStyle("-fx-font-size: 42px;");
-
-        Label timeLabel = new Label(departureTime + "  →  " + arrivalTime);
-        timeLabel.setStyle("-fx-font-size: 22px; -fx-font-weight: bold;");
-
-        Label routeLabel = new Label(from + "  →  " + to);
-        routeLabel.setStyle("-fx-font-size: 15px;");
-
-        Label transportLabel = new Label(transportInfo);
-        transportLabel.setStyle("-fx-font-size: 15px;");
-
-        VBox leftInfo = new VBox(8, timeLabel, routeLabel, transportLabel);
-
-        Region spacer = new Region();
-        HBox.setHgrow(spacer, javafx.scene.layout.Priority.ALWAYS);
-
-        Label statusLabel = new Label(status);
-        statusLabel.setStyle("-fx-font-size: 16px; -fx-font-weight: bold;");
-
-        Label arrivalLabel = new Label(expectedArrival);
-        arrivalLabel.setStyle("-fx-font-size: 15px;");
-
-        Button viewRouteButton = new Button(LanguageService.text("Bekijk route", "View route"));
-        viewRouteButton.setOnAction(event -> viewRoute());
-        viewRouteButton.setPrefWidth(130);
-        viewRouteButton.setPrefHeight(40);
-        viewRouteButton.setStyle("-fx-background-color: white; -fx-border-color: #777; -fx-font-size: 15px;");
-
-        VBox rightInfo = new VBox(12, statusLabel, arrivalLabel, viewRouteButton);
-        rightInfo.setStyle("-fx-border-color: transparent transparent transparent #cccccc; -fx-border-width: 0 0 0 1.5; -fx-padding: 0 0 0 25;");
-
-        HBox card = new HBox(20, iconLabel, leftInfo, spacer, rightInfo);
-        card.setStyle("-fx-border-color: #777; -fx-border-width: 1.5; -fx-padding: 16; -fx-background-color: white;");
-        card.setPrefHeight(120);
-
-        return card;
-    }
-
-    private void renderResults() {
-        resultsContainer.getChildren().clear();
-
-        List<HBox> selectedCards;
-
-        if (selectedTransport.equals("BUS")) {
-            selectedCards = busResultCards;
-        } else {
-            selectedCards = trainResultCards;
-        }
-
-        int max = Math.min(visibleResults, selectedCards.size());
-
-        for (int i = 0; i < max; i++) {
-            resultsContainer.getChildren().add(selectedCards.get(i));
-        }
-
-        boolean hasMoreResults = visibleResults < selectedCards.size();
-        loadMoreButton.setVisible(hasMoreResults);
-        loadMoreButton.setManaged(hasMoreResults);
+    private String valueOrDash(String value) {
+        return value == null || value.isBlank() ? "-" : value;
     }
 
     @FXML
@@ -370,9 +261,5 @@ public class ResultsController implements LanguageRefreshable {
     @FXML
     private void goBackToSearch(ActionEvent event) {
         MainLayoutController.loadPage("home.fxml");
-    }
-
-    private void viewRoute() {
-        MainLayoutController.loadPage("route-detail.fxml");
     }
 }

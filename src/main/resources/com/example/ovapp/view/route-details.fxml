@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.Circle?>
+
+<VBox fx:id="routeDetailsRoot"
+      managed="false"
+      visible="false"
+      styleClass="route-details"
+      xmlns="http://javafx.com/javafx/17.0.12"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="controller.RouteDetailsController">
+
+    <HBox alignment="TOP_LEFT"
+          spacing="24">
+
+        <VBox prefWidth="570">
+            <HBox alignment="CENTER_LEFT"
+                  minHeight="72"
+                  prefHeight="72"
+                  spacing="16">
+                <Label fx:id="departureTimeLabel"
+                       prefWidth="58"
+                       styleClass="route-stop-time" />
+                <StackPane prefWidth="28"
+                           minHeight="72"
+                           prefHeight="72"
+                           maxHeight="72">
+                    <Region prefWidth="2"
+                            maxWidth="2"
+                            prefHeight="36"
+                            StackPane.alignment="BOTTOM_CENTER"
+                            styleClass="timeline-line" />
+                    <Circle radius="5"
+                            styleClass="timeline-circle" />
+                </StackPane>
+                <VBox spacing="5"
+                      HBox.hgrow="ALWAYS">
+                    <Label fx:id="departureStationLabel"
+                           wrapText="true"
+                           styleClass="route-stop-station" />
+                    <Label fx:id="departureDetailLabel"
+                           wrapText="true"
+                           styleClass="route-stop-detail" />
+                </VBox>
+            </HBox>
+
+            <HBox alignment="CENTER_LEFT"
+                  minHeight="72"
+                  prefHeight="72"
+                  spacing="16">
+                <Label fx:id="intermediateTimeLabel"
+                       prefWidth="58"
+                       styleClass="route-stop-time" />
+                <StackPane prefWidth="28"
+                           minHeight="72"
+                           prefHeight="72"
+                           maxHeight="72">
+                    <Region prefWidth="2"
+                            maxWidth="2"
+                            prefHeight="72"
+                            styleClass="timeline-line" />
+                    <Circle radius="5"
+                            styleClass="timeline-circle" />
+                </StackPane>
+                <VBox spacing="5"
+                      HBox.hgrow="ALWAYS">
+                    <Label fx:id="intermediateStationLabel"
+                           wrapText="true"
+                           styleClass="route-stop-station" />
+                    <Label fx:id="intermediateDetailLabel"
+                           wrapText="true"
+                           styleClass="route-stop-detail" />
+                </VBox>
+            </HBox>
+
+            <HBox alignment="CENTER_LEFT"
+                  minHeight="72"
+                  prefHeight="72"
+                  spacing="16">
+                <Label fx:id="arrivalTimeLabel"
+                       prefWidth="58"
+                       styleClass="route-stop-time" />
+                <StackPane prefWidth="28"
+                           minHeight="72"
+                           prefHeight="72"
+                           maxHeight="72">
+                    <Region prefWidth="2"
+                            maxWidth="2"
+                            prefHeight="36"
+                            StackPane.alignment="TOP_CENTER"
+                            styleClass="timeline-line" />
+                    <Circle radius="5"
+                            styleClass="timeline-circle" />
+                </StackPane>
+                <VBox spacing="5"
+                      HBox.hgrow="ALWAYS">
+                    <Label fx:id="arrivalStationLabel"
+                           wrapText="true"
+                           styleClass="route-stop-station" />
+                    <Label fx:id="arrivalDetailLabel"
+                           wrapText="true"
+                           styleClass="route-stop-detail" />
+                </VBox>
+            </HBox>
+        </VBox>
+
+        <VBox spacing="22"
+              prefWidth="230"
+              styleClass="route-facts">
+            <HBox alignment="CENTER_LEFT"
+                  spacing="10">
+                <Label text="&#x25F7;"
+                       styleClass="route-clock-icon" />
+                <Label fx:id="durationValueLabel"
+                       styleClass="route-fact-value" />
+                <Label fx:id="durationTitleLabel"
+                       styleClass="route-fact-title" />
+            </HBox>
+
+            <HBox alignment="CENTER_LEFT"
+                  spacing="12">
+                <Label text="!"
+                       alignment="CENTER"
+                       minWidth="24"
+                       prefWidth="24"
+                       minHeight="24"
+                       prefHeight="24"
+                       styleClass="route-transfer-icon" />
+                <Label fx:id="transfersValueLabel"
+                       styleClass="route-fact-value" />
+                <Label fx:id="transfersTitleLabel"
+                       styleClass="route-fact-title" />
+            </HBox>
+        </VBox>
+    </HBox>
+</VBox>

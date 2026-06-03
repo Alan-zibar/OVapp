@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox styleClass="result-card"
+      xmlns="http://javafx.com/javafx/17.0.12"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="controller.ResultCardController">
+
+    <HBox alignment="CENTER_LEFT"
+          spacing="20"
+          prefHeight="120"
+          styleClass="result-card-summary">
+
+        <Label fx:id="transportIconLabel"
+               styleClass="result-card-icon" />
+
+        <VBox spacing="8">
+            <Label fx:id="timeLabel"
+                   styleClass="result-card-time" />
+            <Label fx:id="routeLabel"
+                   styleClass="result-card-text"
+                   wrapText="true" />
+            <Label fx:id="transportLabel"
+                   styleClass="result-card-text"
+                   wrapText="true" />
+        </VBox>
+
+        <Region HBox.hgrow="ALWAYS" />
+
+        <VBox spacing="12"
+              prefWidth="245"
+              styleClass="result-card-side">
+
+            <HBox alignment="CENTER_LEFT"
+                  spacing="8">
+                <Label fx:id="statusLabel"
+                       minWidth="170"
+                       prefWidth="170"
+                       styleClass="result-card-status" />
+                <Region HBox.hgrow="ALWAYS" />
+                <Button fx:id="favoriteButton"
+                        text="&#x2606;"
+                        onAction="#addToFavorites"
+                        styleClass="favorite-icon-button" />
+            </HBox>
+
+            <Label fx:id="arrivalLabel"
+                   styleClass="result-card-text"
+                   wrapText="true" />
+
+            <Button fx:id="viewRouteButton"
+                    onAction="#toggleRouteDetails"
+                    prefWidth="130"
+                    prefHeight="40"
+                    styleClass="outlined-button" />
+        </VBox>
+    </HBox>
+
+    <HBox fx:id="favoriteMessageBox"
+          alignment="CENTER_LEFT"
+          spacing="10"
+          managed="false"
+          visible="false"
+          styleClass="favorite-message">
+        <Label text="&#x2713;"
+               styleClass="favorite-message-check" />
+        <Label fx:id="favoriteMessageLabel"
+               wrapText="true"
+               styleClass="favorite-message-text" />
+        <Region HBox.hgrow="ALWAYS" />
+        <Button text="x"
+                onAction="#closeFavoriteMessage"
+                styleClass="message-close-button" />
+    </HBox>
+
+    <fx:include fx:id="routeDetails"
+                source="route-details.fxml" />
+</VBox>
