@@ -63,9 +63,7 @@
                         onAction="#goBackToSearch"
                         prefWidth="125"
                         prefHeight="46"
-                        style="-fx-background-color: white;
-                               -fx-border-color: #777;
-                               -fx-font-size: 16px;" />
+                        styleClass="change-search-button" />
             </HBox>
 
             <Label fx:id="transportTitleLabel"
@@ -75,20 +73,15 @@
             <HBox spacing="25">
                 <ToggleButton fx:id="trainToggleButton"
                               text="🚆  Trein"
-                              selected="true"
                               prefWidth="200"
                               prefHeight="42"
-                              style="-fx-background-color: white;
-                                     -fx-border-color: #777;
-                                     -fx-font-size: 16px;" />
+                              styleClass="transport-toggle" />
 
                 <ToggleButton fx:id="busToggleButton"
                               text="🚌  Bus"
                               prefWidth="200"
                               prefHeight="42"
-                              style="-fx-background-color: white;
-                                     -fx-border-color: #777;
-                                     -fx-font-size: 16px;" />
+                              styleClass="transport-toggle" />
             </HBox>
 
             <Label fx:id="optionsTitleLabel"
