@@ -19,7 +19,10 @@ public class MainLayoutController {
     @FXML
     private void initialize() {
         instance = this;
-        loadPage("home.fxml");
+
+        javafx.application.Platform.runLater(() -> {
+            loadPage("home.fxml");
+        });
     }
 
     public static void loadPage(String fxmlFile) {

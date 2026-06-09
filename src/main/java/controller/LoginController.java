@@ -22,6 +22,9 @@ public class LoginController implements LanguageRefreshable {
     private TextField visiblePasswordField;
 
     @FXML
+    private Button togglePasswordButton;
+
+    @FXML
     private Label messageLabel;
 
     @FXML
@@ -106,25 +109,22 @@ public class LoginController implements LanguageRefreshable {
     }
 
 
+    private boolean passwordVisible = false;
+
     @FXML
-    private void togglePasswordVisibility(ActionEvent event){
+    private void togglePasswordVisibility() {
+        passwordVisible = !passwordVisible;
 
-        if (passwordField.isVisible()) {
+        if (passwordVisible) {
             visiblePasswordField.setText(passwordField.getText());
-            passwordField.setVisible(false);
             visiblePasswordField.setVisible(true);
-
-
-        }
-
-        else {
+            passwordField.setVisible(false);
+        } else {
             passwordField.setText(visiblePasswordField.getText());
-            visiblePasswordField.setVisible(false);
             passwordField.setVisible(true);
+            visiblePasswordField.setVisible(false);
         }
-
     }
-
 
 
     @FXML
